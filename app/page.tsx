@@ -1,9 +1,14 @@
-import type { ReactNode } from "react"
+"use client"
+
+import { useEffect, useState, type ReactNode } from "react"
 import {
+  CollegeAdminDestinationScreen,
   CollegeAdminScreen,
   FacultyScreen,
   LoginScreen,
   SuperAdminScreen,
+  SuperAdminDestinationScreen,
+  SuperAdminUserCreationScreen,
 } from "@/components/wireframe/screens-part1"
 import {
   AddQuestionScreen,
@@ -21,6 +26,16 @@ import {
   StudentScreen,
   TenantSettingsScreen,
 } from "@/components/wireframe/screens-part3"
+import {
+  BatchManagementScreen,
+  DepartmentManagementScreen,
+  DepartmentStatusScreen,
+  FacultyDirectoryScreen,
+  GitHubLinkedInConnectScreen,
+  OnboardingWizardScreen,
+  PortfolioResumeScreen,
+  StudentDirectoryScreen,
+} from "@/components/wireframe/screens-part4"
 
 type Screen = {
   id: string
@@ -36,7 +51,7 @@ const screens: Screen[] = [
     id: "login",
     n: 1,
     title: "Login / SSO",
-    desc: "Tenant selection first, then email/password or per-tenant SSO (SAML, Google Workspace).",
+    desc: "Common HU email login with automatic institute routing by approved email domain; no tenant selection is exposed to users.",
     role: "All users",
     render: () => <LoginScreen />,
   },
@@ -49,16 +64,88 @@ const screens: Screen[] = [
     render: () => <SuperAdminScreen />,
   },
   {
-    id: "college-admin",
+    id: "super-admin-user-creation",
     n: 3,
+    title: "Super Admin User Creation",
+    desc: "Create individual or bulk-import faculty and student accounts, assign colleges, and review the creation log.",
+    role: "Super Admin",
+    render: () => <SuperAdminUserCreationScreen />,
+  },
+  {
+    id: "super-admin-overview",
+    n: 4,
+    title: "Platform Overview",
+    desc: "Super Admin overview of platform health, active institutes and operational activity.",
+    role: "Super Admin",
+    render: () => <SuperAdminDestinationScreen kind="overview" />,
+  },
+  {
+    id: "super-admin-settings",
+    n: 7,
+    title: "Platform Settings",
+    desc: "Global security, identity routing and platform defaults.",
+    role: "Super Admin",
+    render: () => <SuperAdminDestinationScreen kind="settings" />,
+  },
+  {
+    id: "college-admin",
+    n: 8,
     title: "College Admin Dashboard",
     desc: "Departments, users & roles, courses, the exam pipeline, report shortcuts and settings.",
     role: "College Admin / Exam Controller",
     render: () => <CollegeAdminScreen />,
   },
   {
+    id: "college-admin-departments",
+    n: 18,
+    title: "College Admin Departments",
+    desc: "Review departments inferred automatically from faculty and student creation.",
+    role: "College Admin / Exam Controller",
+    render: () => <CollegeAdminDestinationScreen kind="departments" />,
+  },
+  {
+    id: "college-admin-users",
+    n: 19,
+    title: "College Admin Users",
+    desc: "View faculty and student users provisioned by the Super Admin.",
+    role: "College Admin / Exam Controller",
+    render: () => <CollegeAdminDestinationScreen kind="users" />,
+  },
+  {
+    id: "college-admin-courses",
+    n: 20,
+    title: "College Admin Courses",
+    desc: "Manage course ownership, enrollment and faculty assignments.",
+    role: "College Admin / Exam Controller",
+    render: () => <CollegeAdminDestinationScreen kind="courses" />,
+  },
+  {
+    id: "college-admin-exams",
+    n: 21,
+    title: "College Admin Exams",
+    desc: "Coordinate exam schedules, reviews and publishing controls.",
+    role: "College Admin / Exam Controller",
+    render: () => <CollegeAdminDestinationScreen kind="exams" />,
+  },
+  {
+    id: "college-admin-reports",
+    n: 22,
+    title: "College Admin Reports",
+    desc: "Open college-level academic, outcome and examination reports.",
+    role: "College Admin / Exam Controller",
+    render: () => <CollegeAdminDestinationScreen kind="reports" />,
+  },
+  {
+    id: "college-admin-settings",
+    n: 23,
+    title: "College Admin Settings",
+    desc: "Configure college branding, roles and institute preferences.",
+    role: "College Admin / Exam Controller",
+    render: () => <CollegeAdminDestinationScreen kind="settings" />,
+  },
+  {
     id: "faculty",
-    n: 4,
+    n: 5,
     title: "Faculty Dashboard",
     desc: "My courses, question-bank snapshot, assessment statuses and the manual grading queue.",
     role: "Faculty",
@@ -66,7 +153,7 @@ const screens: Screen[] = [
   },
   {
     id: "wizard",
-    n: 5,
+    n: 6,
     title: "Assessment Creation Wizard",
     desc: "Four steps — Details, Add Questions, Settings (timing / randomization / proctoring), Validation & Submit.",
     role: "Faculty",
@@ -74,7 +161,7 @@ const screens: Screen[] = [
   },
   {
     id: "add-question",
-    n: 6,
+    n: 7,
     title: "Add Question (MCQ / Coding)",
     desc: "Per-question editor with MCQ or Coding types. Coding questions include an inline compiler / test runner, and validation runs automatically as you edit — no separate submit step.",
     role: "Faculty",
@@ -82,7 +169,7 @@ const screens: Screen[] = [
   },
   {
     id: "question-bank",
-    n: 6,
+    n: 8,
     title: "Question Bank",
     desc: "Filter by subject, unit, Bloom's taxonomy, difficulty and type. Preview panel and bulk import.",
     role: "Faculty",
@@ -90,7 +177,7 @@ const screens: Screen[] = [
   },
   {
     id: "validation",
-    n: 7,
+    n: 9,
     title: "Validation Workflow",
     desc: "Submission → HOD review → Exam Cell approval, with comments, version history and status badges.",
     role: "HOD / Exam Cell",
@@ -98,7 +185,7 @@ const screens: Screen[] = [
   },
   {
     id: "exam-management",
-    n: 8,
+    n: 10,
     title: "Exam Management",
     desc: "Schedule, student list, accommodations, proctoring settings and publish / unpublish controls.",
     role: "Exam Controller",
@@ -106,7 +193,7 @@ const screens: Screen[] = [
   },
   {
     id: "student",
-    n: 9,
+    n: 11,
     title: "Student Dashboard",
     desc: "Enrolled courses with progress, upcoming exams, recent results and notifications.",
     role: "Student",
@@ -114,7 +201,7 @@ const screens: Screen[] = [
   },
   {
     id: "exam-taking",
-    n: 10,
+    n: 12,
     title: "Exam Taking Interface (MCQ)",
     desc: "Countdown timer, question palette, navigation, flag-for-review and guarded submit.",
     role: "Student",
@@ -122,7 +209,7 @@ const screens: Screen[] = [
   },
   {
     id: "exam-coding",
-    n: 10,
+    n: 13,
     title: "Exam Taking — Coding Question",
     desc: "Problem statement with constraints, language selector, code editor and a run/test console showing sample vs hidden test cases. Same proctored top bar, palette and guarded submit.",
     role: "Student",
@@ -130,7 +217,7 @@ const screens: Screen[] = [
   },
   {
     id: "exam-lab",
-    n: 10,
+    n: 14,
     title: "Exam Taking — Lab Question",
     desc: "KillerKoda-style split: instructions with an automated step checklist on the left, a Monaco-style editor (file tabs, explorer) and a live sandbox terminal on the right. Check task runs the grader for the active step.",
     role: "Student",
@@ -138,7 +225,7 @@ const screens: Screen[] = [
   },
   {
     id: "grading",
-    n: 11,
+    n: 15,
     title: "Grading & Moderation",
     desc: "Auto-graded vs manual, rubric grading, moderation panel and re-evaluation requests.",
     role: "Faculty / Moderator",
@@ -146,7 +233,7 @@ const screens: Screen[] = [
   },
   {
     id: "reports",
-    n: 12,
+    n: 16,
     title: "Reports & Analytics",
     desc: "Student progress, item analysis (difficulty / discrimination), outcome attainment and NAAC/NBA exports.",
     role: "Auditor / Admin",
@@ -154,15 +241,87 @@ const screens: Screen[] = [
   },
   {
     id: "settings",
-    n: 13,
+    n: 17,
     title: "Tenant Settings",
     desc: "Branding, roles & permissions matrix, integrations and billing — scoped to a single tenant.",
     role: "College Admin",
     render: () => <TenantSettingsScreen />,
   },
+  {
+    id: "department-management",
+    n: 18,
+    title: "Department Management",
+    desc: "Review departments automatically inferred from faculty and student creation, with HOD ownership and sync status. Detail additions: sync state, HOD ownership and permission note.",
+    role: "College Admin",
+    render: () => <DepartmentManagementScreen />,
+  },
+  {
+    id: "batch-management",
+    n: 19,
+    title: "Batch Management",
+    desc: "Track academic batches, enrollment totals, active years and archived cohorts.",
+    role: "College Admin",
+    render: () => <BatchManagementScreen />,
+  },
+  {
+    id: "student-directory",
+    n: 20,
+    title: "Student Directory",
+    desc: "Search, filter, export and review students provisioned for the current institute.",
+    role: "College Admin",
+    render: () => <StudentDirectoryScreen />,
+  },
+  {
+    id: "faculty-directory",
+    n: 21,
+    title: "Faculty Directory",
+    desc: "Manage the institute faculty directory with department, role and status filters.",
+    role: "College Admin / HOD",
+    render: () => <FacultyDirectoryScreen />,
+  },
+  {
+    id: "department-status",
+    n: 22,
+    title: "Department Status",
+    desc: "Read-only department readiness and academic coverage view for Faculty and HOD users.",
+    role: "Faculty / HOD",
+    render: () => <DepartmentStatusScreen />,
+  },
+  {
+    id: "github-linkedin",
+    n: 23,
+    title: "GitHub & LinkedIn Connect",
+    desc: "Students connect professional profiles and choose whether those links appear on their portfolio.",
+    role: "Student",
+    render: () => <GitHubLinkedInConnectScreen />,
+  },
+  {
+    id: "portfolio-resume",
+    n: 24,
+    title: "Portfolio & Resume",
+    desc: "Student portfolio editor with profile, headline, resume upload and project entries.",
+    role: "Student",
+    render: () => <PortfolioResumeScreen />,
+  },
+  {
+    id: "onboarding-wizard",
+    n: 25,
+    title: "Institute Onboarding Wizard",
+    desc: "Four-step Super Admin flow for institute details, identity routing, admin access and review.",
+    role: "Super Admin",
+    render: () => <OnboardingWizardScreen />,
+  },
 ]
 
 export default function Page() {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) return null
+
   return (
     <div className="min-h-screen bg-neutral-100 text-neutral-800">
       {/* Kit header */}
@@ -182,7 +341,7 @@ export default function Page() {
 
           <p className="max-w-3xl text-[13px] leading-relaxed text-neutral-500">
             {
-              "13 desktop-first screens on an 8px grid — top bar with tenant switcher, left sidebar, breadcrumbs and content area. Placeholder blocks, squiggly text lines, simple icons and dashed annotations mark key interactions, validation states and workflow steps. No real colors, logos or copy."
+              "25 desktop-first screens on an 8px grid — top bar with tenant switcher, left sidebar, breadcrumbs and content area. Placeholder blocks, squiggly text lines, simple icons and dashed annotations mark key interactions, validation states and workflow steps. No real colors, logos or copy."
             }
           </p>
 
@@ -208,14 +367,14 @@ export default function Page() {
 
           {/* Index */}
           <nav className="flex flex-wrap gap-2 pt-1">
-            {screens.map((s, i) => (
+            {screens.map((s) => (
               <a
                 key={s.id}
                 href={`#${s.id}`}
                 className="flex items-center gap-1.5 rounded border border-neutral-300 bg-white px-2.5 py-1 text-[11px] text-neutral-600 transition-colors hover:border-neutral-500 hover:bg-neutral-50"
               >
                 <span className="flex h-4 w-4 items-center justify-center rounded-full bg-neutral-200 text-[9px] font-bold text-neutral-500">
-                  {i + 1}
+                  {s.n}
                 </span>
                 {s.title}
               </a>
@@ -226,13 +385,13 @@ export default function Page() {
 
       {/* Gallery */}
       <main className="mx-auto grid max-w-[1200px] grid-cols-1 gap-8 px-6 py-8">
-        {screens.map((s, i) => (
+        {screens.map((s) => (
           <section key={s.id} id={s.id} className="scroll-mt-6">
             <article className="overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-sm">
               <header className="flex items-start justify-between gap-4 border-b border-neutral-200 px-5 py-4">
                 <div className="flex items-start gap-3">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-neutral-700 text-[12px] font-bold text-neutral-50">
-                    {i + 1}
+                    {s.n}
                   </span>
                   <div className="flex flex-col gap-1">
                     <h2 className="text-[15px] font-semibold text-neutral-800">{s.title}</h2>

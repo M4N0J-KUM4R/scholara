@@ -223,3 +223,42 @@
   background: #fafafa;
   color: #525252;
 }
+
+/* Handoff annotations and responsive inspection helpers */
+.wf-state-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  border: 1px dashed #a3a3a3;
+  background: #fafafa;
+  padding: 8px;
+}
+.wf-state-label {
+  border: 1px solid #d4d4d4;
+  border-radius: 999px;
+  padding: 2px 7px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: #525252;
+}
+.wf-handoff {
+  border-left: 3px solid #a3a3a3;
+  background: #f5f5f5;
+  padding: 10px 12px;
+  font-size: 10px;
+  color: #525252;
+}
+.wf-dense-table { min-width: 640px; }
+.wf-focus-demo:focus-visible { outline: 2px solid #404040; outline-offset: 2px; }
+@media (max-width: 768px) {
+  .wf-table-scroll { overflow-x: auto; }
+  .wf-mobile-note { display: block; }
+}
+@media (min-width: 769px) {
+  .wf-mobile-note { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; }
+}

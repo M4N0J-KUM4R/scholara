@@ -32,7 +32,7 @@ export function TopBar({ showTenantSwitcher = true }: { showTenantSwitcher?: boo
           <span className="text-[12px] font-semibold text-neutral-600">CollegeCloud</span>
         </div>
         {showTenantSwitcher ? (
-          <div className="flex items-center gap-2 rounded border border-dashed border-neutral-400 bg-neutral-50 px-2 py-1">
+          <div aria-label="Tenant switcher" className="flex items-center gap-2 rounded border border-dashed border-neutral-400 bg-neutral-50 px-2 py-1">
             <Icon glyph="⌂" size={18} />
             <div className="flex flex-col">
               <span className="text-[8px] uppercase tracking-wide text-neutral-400">Tenant</span>
@@ -42,7 +42,7 @@ export function TopBar({ showTenantSwitcher = true }: { showTenantSwitcher?: boo
         ) : null}
       </div>
       <div className="flex items-center gap-3">
-        <div className="flex h-7 w-56 items-center gap-1.5 rounded border border-neutral-300 bg-white px-2">
+        <div role="search" aria-label="Global search" className="flex h-7 w-56 items-center gap-1.5 rounded border border-neutral-300 bg-white px-2 max-md:hidden">
           <span className="text-[10px] text-neutral-400">⌕</span>
           <span className="text-[10px] text-neutral-400">Search…</span>
         </div>
@@ -60,12 +60,12 @@ export function Sidebar({
   active,
   role,
 }: {
-  items: { glyph: string; label: string }[]
+  items: { glyph: string; label: string; href?: string }[]
   active: string
   role: string
 }) {
   return (
-    <aside className="w-48 shrink-0 border-r border-neutral-200 bg-neutral-50 p-2">
+    <aside aria-label={`${role} navigation`} className="w-48 shrink-0 border-r border-neutral-200 bg-neutral-50 p-2 max-md:w-12 max-md:px-1">
       <div className="mb-2 px-2 py-1">
         <Eyebrow>{role}</Eyebrow>
       </div>
@@ -73,8 +73,9 @@ export function Sidebar({
         {items.map((it) => {
           const isActive = it.label === active
           return (
-            <div
+            <a
               key={it.label}
+              href={it.href ?? `#${it.label.toLowerCase().replaceAll(" ", "-")}`}
               className={`flex items-center gap-2 rounded px-2 py-1.5 ${
                 isActive ? "border border-neutral-300 bg-white" : "border border-transparent"
               }`}
@@ -83,7 +84,7 @@ export function Sidebar({
               <span className={`text-[11px] ${isActive ? "font-semibold text-neutral-700" : "text-neutral-500"}`}>
                 {it.label}
               </span>
-            </div>
+            </a>
           )
         })}
       </nav>
@@ -152,21 +153,19 @@ export function AppShell({
 
 export const roleNav = {
   superAdmin: [
-    { glyph: "▤", label: "Overview" },
-    { glyph: "⌂", label: "Tenants" },
-    { glyph: "▦", label: "Plans" },
-    { glyph: "⚑", label: "Feature Flags" },
-    { glyph: "◫", label: "Usage" },
-    { glyph: "⚙", label: "Platform Settings" },
+    { glyph: "▤", label: "Overview", href: "#super-admin-overview" },
+    { glyph: "⌂", label: "Tenants", href: "#super-admin" },
+    { glyph: "☺", label: "User Creation", href: "#super-admin-user-creation" },
+    { glyph: "⚙", label: "Platform Settings", href: "#super-admin-settings" },
   ],
   collegeAdmin: [
-    { glyph: "▤", label: "Dashboard" },
-    { glyph: "⧉", label: "Departments" },
-    { glyph: "☺", label: "Users" },
-    { glyph: "▦", label: "Courses" },
-    { glyph: "✎", label: "Exams" },
-    { glyph: "◫", label: "Reports" },
-    { glyph: "⚙", label: "Settings" },
+    { glyph: "▤", label: "Dashboard", href: "#college-admin" },
+    { glyph: "⧉", label: "Departments", href: "#college-admin-departments" },
+    { glyph: "☺", label: "Users", href: "#college-admin-users" },
+    { glyph: "▦", label: "Courses", href: "#college-admin-courses" },
+    { glyph: "✎", label: "Exams", href: "#college-admin-exams" },
+    { glyph: "◫", label: "Reports", href: "#college-admin-reports" },
+    { glyph: "⚙", label: "Settings", href: "#college-admin-settings" },
   ],
   faculty: [
     { glyph: "▤", label: "Dashboard" },
