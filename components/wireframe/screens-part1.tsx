@@ -20,7 +20,7 @@ import {
 } from "./kit"
 import { AppShell, Frame, roleNav } from "./shell"
 
-/* 1 — Login / SSO with tenant selection ---------------------------- */
+/* 1 — Common email login with automatic tenant routing ------------- */
 export function LoginScreen() {
   return (
     <Frame minWidth={720}>
@@ -37,7 +37,7 @@ export function LoginScreen() {
             <Icon glyph="⌂" size={64} />
             <Line w={160} />
             <Line w={120} />
-            <Note className="mt-2 max-w-[220px]">Brand-agnostic panel — tenant logo &amp; color inject here at runtime.</Note>
+            <Note className="mt-2 max-w-[220px]">Common login for every institute — the approved HU email domain routes users to the correct tenant automatically.</Note>
           </div>
           <Line w={90} />
         </div>
@@ -45,13 +45,13 @@ export function LoginScreen() {
         {/* Form side */}
         <div className="flex flex-col gap-4 p-6">
           <div className="flex flex-col gap-1">
-            <span className="text-[14px] font-semibold text-neutral-700">Sign in</span>
-            <Line w={140} />
+            <span className="text-[14px] font-semibold text-neutral-700">Sign in to your institute</span>
+            <Line w={180} />
           </div>
 
-          <Select label="Select your college (tenant)" value="[College Name] ▾" />
+          <Label muted>Use your official student or college email. No tenant selection is required.</Label>
 
-          <Field label="Email / University ID" placeholder="[you@college.edu]" />
+          <Field label="HU email address" placeholder="[you@institute.edu]" />
           <Field label="Password" placeholder="••••••••" />
 
           <div className="flex items-center justify-between">
@@ -59,7 +59,7 @@ export function LoginScreen() {
             <Label>Forgot password?</Label>
           </div>
 
-          <Btn className="w-full justify-center">Sign in</Btn>
+          <Btn className="w-full justify-center">Continue</Btn>
         </div>
       </div>
     </Frame>

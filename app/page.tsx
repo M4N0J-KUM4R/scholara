@@ -37,7 +37,7 @@ const screens: Screen[] = [
     id: "login",
     n: 1,
     title: "Login / SSO",
-    desc: "Tenant selection first, then email/password or per-tenant SSO (SAML, Google Workspace).",
+    desc: "Common HU email login with automatic institute routing by approved email domain; no tenant selection is exposed to users.",
     role: "All users",
     render: () => <LoginScreen />,
   },
