@@ -21,7 +21,7 @@ import {
   Table,
   Toggle,
 } from "./kit"
-import { AppShell, Frame, roleNav } from "./shell"
+import { AppShell, Frame, PageHead, roleNav } from "./shell"
 
 /* 1 — Common email login with automatic tenant routing ------------- */
 export function LoginScreen() {
@@ -228,7 +228,29 @@ export function SuperAdminUserCreationScreen() {
   )
 }
 
-/* 4 — College Admin dashboard -------------------------------------- */
+/* 4 — Super Admin destination pages -------------------------------- */
+export function SuperAdminDestinationScreen({ kind }: { kind: "overview" | "feature-flags" | "usage" | "settings" }) {
+  const content = {
+    overview: { title: "Platform overview", trail: "Overview", description: "Cross-tenant health, active users and platform operations at a glance." },
+    "feature-flags": { title: "Feature flags", trail: "Feature Flags", description: "Control staged platform rollouts and review tenant-wide availability." },
+    usage: { title: "Platform usage", trail: "Usage", description: "Monitor activity, storage and adoption across every institute." },
+    settings: { title: "Platform settings", trail: "Platform Settings", description: "Manage global security, identity routing and platform defaults." },
+  }[kind]
+
+  return (
+    <AppShell role="Super Admin" nav={roleNav.superAdmin} active={content.trail} trail={["Platform", content.trail]} minWidth={980}>
+      <PageHead title={content.title} actions={<Btn size="sm">Save changes</Btn>} />
+      <Note>{content.description} This page is visible only to Super Admins.</Note>
+      <div className="grid grid-cols-3 gap-4">
+        <Panel title="Configuration"><div className="flex flex-col gap-3"><Field label="Workspace name" placeholder="[CollegeCloud platform]" /><Field label="Approved HU email domains" placeholder="[institute.edu, college.edu]" /><Btn size="sm">Update configuration</Btn></div></Panel>
+        <Panel title="Activity"><div className="flex flex-col gap-2"><Stat label="Active institutes" big /><Stat label="Users this month" /></div></Panel>
+        <Panel title="Recent changes"><div className="flex flex-col gap-3"><Label>Global routing updated</Label><Label>Policy review pending</Label><Label>Usage export ready</Label></div></Panel>
+      </div>
+    </AppShell>
+  )
+}
+
+/* 5 — College Admin dashboard -------------------------------------- */
 export function CollegeAdminScreen() {
   return (
     <AppShell

@@ -60,7 +60,7 @@ export function Sidebar({
   active,
   role,
 }: {
-  items: { glyph: string; label: string }[]
+  items: { glyph: string; label: string; href?: string }[]
   active: string
   role: string
 }) {
@@ -73,8 +73,9 @@ export function Sidebar({
         {items.map((it) => {
           const isActive = it.label === active
           return (
-            <div
+            <a
               key={it.label}
+              href={it.href ?? `#${it.label.toLowerCase().replaceAll(" ", "-")}`}
               className={`flex items-center gap-2 rounded px-2 py-1.5 ${
                 isActive ? "border border-neutral-300 bg-white" : "border border-transparent"
               }`}
@@ -83,7 +84,7 @@ export function Sidebar({
               <span className={`text-[11px] ${isActive ? "font-semibold text-neutral-700" : "text-neutral-500"}`}>
                 {it.label}
               </span>
-            </div>
+            </a>
           )
         })}
       </nav>
@@ -152,11 +153,10 @@ export function AppShell({
 
 export const roleNav = {
   superAdmin: [
-    { glyph: "▤", label: "Overview" },
-    { glyph: "⌂", label: "Tenants" },
-    { glyph: "☺", label: "User Creation" },
-    { glyph: "▦", label: "Plans" },
-    { glyph: "⚑", label: "Feature Flags" },
+    { glyph: "▤", label: "Overview", href: "#super-admin-overview" },
+    { glyph: "⌂", label: "Tenants", href: "#super-admin" },
+    { glyph: "☺", label: "User Creation", href: "#super-admin-user-creation" },
+    { glyph: "⚑", label: "Feature Flags", href: "#super-admin-feature-flags" },
     { glyph: "◫", label: "Usage" },
     { glyph: "⚙", label: "Platform Settings" },
   ],
