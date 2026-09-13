@@ -175,6 +175,219 @@ export function WizardScreen() {
   )
 }
 
+/* Question type tabs */
+function TypeTabs({ active }: { active: "mcq" | "coding" }) {
+  const tabs = [
+    ["mcq", "MCQ"],
+    ["coding", "Coding"],
+  ] as const
+  return (
+    <div className="flex items-center gap-1 rounded-md border border-neutral-300 bg-neutral-100 p-1">
+      {tabs.map(([id, label]) => (
+        <span
+          key={id}
+          className={`rounded px-3 py-1 text-[10px] font-semibold ${
+            id === active ? "border border-neutral-500 bg-white text-neutral-700 shadow-sm" : "text-neutral-400"
+          }`}
+        >
+          {label}
+        </span>
+      ))}
+    </div>
+  )
+}
+
+/* Live auto-validation checklist */
+function AutoValidation({ blocked }: { blocked: boolean }) {
+  const checks = [
+    ["Question stem present", "ok"],
+    ["Marks + Bloom level assigned", "ok"],
+    ["≥ 1 test case defined (3)", "ok"],
+    ["Starter code compiles", "ok"],
+    ["Reference solution passes all tests", blocked ? "warn" : "ok"],
+  ] as const
+  return (
+    <Panel title="Auto-validation · live">
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center gap-2 rounded border border-dashed border-neutral-300 bg-neutral-50 px-2 py-1.5">
+          <span className="flex h-4 w-4 items-center justify-center rounded-full wf-bar text-[9px] text-neutral-700">
+            ↻
+          </span>
+          <Label>Runs automatically on every edit — no separate step.</Label>
+        </div>
+        {checks.map(([t, s], i) => (
+          <div key={i} className="flex items-center gap-2 rounded border border-neutral-200 px-2 py-1.5">
+            <span
+              className={`flex h-4 w-4 items-center justify-center rounded-full text-[9px] ${
+                s === "ok" ? "bg-neutral-600 text-white" : "wf-bar text-neutral-700"
+              }`}
+            >
+              {s === "ok" ? "✓" : "!"}
+            </span>
+            <Label>{t}</Label>
+          </div>
+        ))}
+        <Note arrow="up">
+          {blocked ? "\"Add\" stays disabled until all checks pass." : "All checks passed — question can be added."}
+        </Note>
+      </div>
+    </Panel>
+  )
+}
+
+/* 5b — Add question (MCQ | Coding + compiler) ---------------------- */
+export function AddQuestionScreen() {
+  return (
+    <AppShell
+      role="Faculty"
+      nav={roleNav.faculty}
+      active="Assessments"
+      trail={["[Course Title]", "Assessments", "[Exam Title]", "Add Question"]}
+      minWidth={980}
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <span className="text-[13px] font-semibold text-neutral-700">Add Question — [Exam Title]</span>
+          <Badge tone="outline">Q7 of 42</Badge>
+        </div>
+        <div className="flex items-center gap-3">
+          <Label>Type</Label>
+          <TypeTabs active="coding" />
+        </div>
+      </div>
+
+      {/* ---- Coding question (active) ---- */}
+      <div className="grid grid-cols-3 gap-4">
+        <div className="col-span-2 flex flex-col gap-4">
+          <Panel title="Coding question">
+            <div className="flex flex-col gap-3">
+              <Field label="Title" placeholder="[Problem title]" />
+              <div className="grid grid-cols-3 gap-3">
+                <Select label="Language" value="C++ 17 ▾" />
+                <Select label="Bloom level" value="Apply ▾" />
+                <Field label="Marks" placeholder="10" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <Label>Problem statement</Label>
+                <div className="rounded border border-neutral-300 p-2">
+                  <Lines count={3} widths={["100%", "92%", "60%"]} />
+                </div>
+              </div>
+            </div>
+          </Panel>
+
+          <Panel
+            title="Starter / reference code"
+            action={
+              <div className="flex items-center gap-2">
+                <Badge tone="outline">main.cpp</Badge>
+                <Btn size="sm" variant="outline">
+                  ▷ Run
+                </Btn>
+              </div>
+            }
+          >
+            {/* code editor mock */}
+            <div className="overflow-hidden rounded border border-neutral-300 bg-neutral-50 font-mono">
+              {[
+                ["60%", true],
+                ["78%", false],
+                ["45%", false],
+                ["70%", false],
+                ["30%", false],
+                ["55%", true],
+              ].map(([w, dedent], i) => (
+                <div key={i} className="flex items-center gap-3 border-b border-neutral-100 px-2 py-1 last:border-0">
+                  <span className="w-4 shrink-0 text-right text-[9px] text-neutral-300">{i + 1}</span>
+                  <span style={{ marginLeft: dedent ? 0 : 16 }}>
+                    <Line w={w as string} />
+                  </span>
+                </div>
+              ))}
+            </div>
+            <Note arrow="up" className="mt-2">
+              Editor runs against the compiler sandbox on Run and on Save.
+            </Note>
+          </Panel>
+        </div>
+
+        {/* right rail: compiler + validation */}
+        <div className="col-span-1 flex flex-col gap-4">
+          <Panel title="Compiler · test runner" action={<Badge tone="dark">2 / 3 pass</Badge>}>
+            <div className="flex flex-col gap-2">
+              {[
+                ["Test 1 · sample", "pass"],
+                ["Test 2 · edge (empty)", "pass"],
+                ["Test 3 · large N", "fail"],
+              ].map(([t, s], i) => (
+                <div key={i} className="flex items-center justify-between rounded border border-neutral-200 px-2 py-1.5">
+                  <Label>{t}</Label>
+                  <Badge tone={s === "pass" ? "dark" : "hatch"}>{s === "pass" ? "✓ pass" : "✕ fail"}</Badge>
+                </div>
+              ))}
+              <div className="rounded border border-neutral-300 bg-neutral-900/5 p-2 font-mono">
+                <Eyebrow>Output console</Eyebrow>
+                <div className="mt-1.5 flex flex-col gap-1">
+                  <Line w="80%" />
+                  <Line w="55%" />
+                  <Line w="68%" />
+                </div>
+              </div>
+              <Btn size="sm" variant="outline" className="w-full justify-center">
+                + Add test case
+              </Btn>
+            </div>
+          </Panel>
+
+          <AutoValidation blocked />
+
+          <div className="flex gap-2">
+            <Btn variant="outline" className="flex-1 justify-center">
+              Cancel
+            </Btn>
+            <Btn className="flex-1 justify-center opacity-50">+ Add to Exam</Btn>
+          </div>
+        </div>
+      </div>
+
+      {/* ---- MCQ variant (alternate type) ---- */}
+      <Panel
+        title="Alternate type · MCQ editor"
+        action={<Badge tone="outline">shown for reference</Badge>}
+      >
+        <div className="grid grid-cols-3 gap-4">
+          <div className="col-span-2 flex flex-col gap-3">
+            <div className="flex flex-col gap-1">
+              <Label>Question stem</Label>
+              <div className="rounded border border-neutral-300 p-2">
+                <Lines count={2} widths={["100%", "72%"]} />
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              {["A", "B", "C", "D"].map((o, i) => (
+                <div key={o} className="flex items-center gap-2 rounded border border-neutral-200 px-2 py-1.5">
+                  <span
+                    className={`flex h-4 w-4 items-center justify-center rounded-full border text-[8px] ${
+                      i === 2 ? "border-neutral-600 bg-neutral-600 text-white" : "border-neutral-300 text-neutral-400"
+                    }`}
+                  >
+                    {i === 2 ? "✓" : o}
+                  </span>
+                  <Line w="65%" />
+                </div>
+              ))}
+              <Note arrow="up">Mark exactly one correct option — validated live.</Note>
+            </div>
+          </div>
+          <div className="col-span-1">
+            <AutoValidation blocked={false} />
+          </div>
+        </div>
+      </Panel>
+    </AppShell>
+  )
+}
+
 /* 6 — Question bank ------------------------------------------------ */
 export function QuestionBankScreen() {
   return (

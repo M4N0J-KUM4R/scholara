@@ -6,6 +6,7 @@ import {
   SuperAdminScreen,
 } from "@/components/wireframe/screens-part1"
 import {
+  AddQuestionScreen,
   ExamManagementScreen,
   QuestionBankScreen,
   ValidationScreen,
@@ -68,6 +69,14 @@ const screens: Screen[] = [
     desc: "Four steps — Details, Add Questions, Settings (timing / randomization / proctoring), Validation & Submit.",
     role: "Faculty",
     render: () => <WizardScreen />,
+  },
+  {
+    id: "add-question",
+    n: 6,
+    title: "Add Question (MCQ / Coding)",
+    desc: "Per-question editor with MCQ or Coding types. Coding questions include an inline compiler / test runner, and validation runs automatically as you edit — no separate submit step.",
+    role: "Faculty",
+    render: () => <AddQuestionScreen />,
   },
   {
     id: "question-bank",
@@ -181,14 +190,14 @@ export default function Page() {
 
           {/* Index */}
           <nav className="flex flex-wrap gap-2 pt-1">
-            {screens.map((s) => (
+            {screens.map((s, i) => (
               <a
                 key={s.id}
                 href={`#${s.id}`}
                 className="flex items-center gap-1.5 rounded border border-neutral-300 bg-white px-2.5 py-1 text-[11px] text-neutral-600 transition-colors hover:border-neutral-500 hover:bg-neutral-50"
               >
                 <span className="flex h-4 w-4 items-center justify-center rounded-full bg-neutral-200 text-[9px] font-bold text-neutral-500">
-                  {s.n}
+                  {i + 1}
                 </span>
                 {s.title}
               </a>
@@ -199,13 +208,13 @@ export default function Page() {
 
       {/* Gallery */}
       <main className="mx-auto grid max-w-[1200px] grid-cols-1 gap-8 px-6 py-8">
-        {screens.map((s) => (
+        {screens.map((s, i) => (
           <section key={s.id} id={s.id} className="scroll-mt-6">
             <article className="overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-sm">
               <header className="flex items-start justify-between gap-4 border-b border-neutral-200 px-5 py-4">
                 <div className="flex items-start gap-3">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-neutral-700 text-[12px] font-bold text-neutral-50">
-                    {s.n}
+                    {i + 1}
                   </span>
                   <div className="flex flex-col gap-1">
                     <h2 className="text-[15px] font-semibold text-neutral-800">{s.title}</h2>
