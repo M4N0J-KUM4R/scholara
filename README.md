@@ -1,6 +1,23 @@
-# scholara
+# scholara — CollegeCloud
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+A multi-tenant LMS and online examination platform. Each **institute (tenant)** gets an isolated workspace for departments, batches, courses, faculty, students, question banks, proctored assessments (MCQ / coding / lab), a submission → HOD → exam-cell validation workflow, grading & moderation, analytics, and student portfolios.
+
+This repository currently contains a low-fidelity, grayscale **wireframe UI kit** (25 desktop screens in `components/wireframe/`) plus the data model that the production app is designed around. This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+
+## Roles
+
+| Role | Scope | Summary |
+| --- | --- | --- |
+| Super Admin | Platform | Manages tenants, subscription plans, feature flags, user provisioning, identity routing. |
+| College Admin / Exam Controller | Tenant | Departments, users, courses, exam pipeline, reports, tenant settings. |
+| HOD | Department | Reviews/validates assessments, monitors faculty load and department readiness. |
+| Faculty / Moderator | Course | Authors questions, builds assessments, grades and moderates. |
+| Student | Self | Takes exams, views results, manages portfolio and external profile links. |
+| Auditor | Tenant (read) | Views outcome-attainment and NAAC/NBA export reports. |
+
+## Documentation
+
+- **[docs/DATABASE.md](docs/DATABASE.md)** — Entity Relationship Diagram (ERD), data dictionary of every table, datatypes, and required fields.
 
 ## Built with v0
 
@@ -20,7 +37,7 @@ yarn dev
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the wireframe gallery.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
