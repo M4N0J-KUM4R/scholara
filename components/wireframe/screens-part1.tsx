@@ -50,7 +50,6 @@ export function LoginScreen() {
           </div>
 
           <Select label="Select your college (tenant)" value="[College Name] ▾" />
-          <Note arrow="up">Tenant chosen first → scopes users, branding &amp; SSO provider.</Note>
 
           <Field label="Email / University ID" placeholder="[you@college.edu]" />
           <Field label="Password" placeholder="••••••••" />
@@ -61,22 +60,6 @@ export function LoginScreen() {
           </div>
 
           <Btn className="w-full justify-center">Sign in</Btn>
-
-          <div className="flex items-center gap-2">
-            <div className="h-px flex-1 bg-neutral-200" />
-            <Label muted>or</Label>
-            <div className="h-px flex-1 bg-neutral-200" />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <Btn variant="outline" className="w-full justify-center">
-              <Icon glyph="⚿" size={16} /> Continue with SSO (SAML)
-            </Btn>
-            <Btn variant="outline" className="w-full justify-center">
-              <Icon glyph="◎" size={16} /> Continue with Google Workspace
-            </Btn>
-          </div>
-          <Note arrow="left">SSO options render per tenant configuration.</Note>
         </div>
       </div>
     </Frame>
@@ -120,16 +103,6 @@ export function SuperAdminScreen() {
         </Panel>
 
         <div className="flex flex-col gap-4">
-          <Panel title="Subscription Plans">
-            <div className="flex flex-col gap-2">
-              {["Trial", "Pro", "Enterprise"].map((p) => (
-                <div key={p} className="flex items-center justify-between rounded border border-neutral-200 px-2 py-1.5">
-                  <Label>{p}</Label>
-                  <Bar w={60} h={10} />
-                </div>
-              ))}
-            </div>
-          </Panel>
           <Panel title="Feature Flags">
             <div className="flex flex-col gap-2">
               {["Proctoring v2", "AI item analysis", "NBA reports", "Offline exams"].map((f, i) => (
