@@ -1,3 +1,6 @@
+"use client"
+
+import { useState } from "react"
 import {
   Badge,
   Bar,
@@ -68,14 +71,29 @@ export function LoginScreen() {
 
 /* 2 — Super Admin dashboard ---------------------------------------- */
 export function SuperAdminScreen() {
+  const [showFilter, setShowFilter] = useState(false)
+  const [showAddTenant, setShowAddTenant] = useState(false)
+  const [openTenant, setOpenTenant] = useState<string | null>(null)
+  const [flags, setFlags] = useState([true, false, true, false])
+  const [notice, setNotice] = useState("")
+
+  const notify = (message: string) => {
+    setNotice(message)
+    window.setTimeout(() => setNotice(""), 2600)
+  }
+
+  const tenants = ["Northbridge College", "Horizon Institute", "Lakeside University", "Pioneer Academy"]
+
   return (
     <AppShell role="Super Admin" nav={roleNav.superAdmin} active="Tenants" trail={["Platform", "Tenants"]}>
       <div className="grid grid-cols-4 gap-3">
-        <Stat label="Active tenants" big />
-        <Stat label="Total users" />
-        <Stat label="Exams this month" />
-        <Stat label="MRR" />
+        <button type="button" className="text-left" onClick={() => notify("Showing all active tenants")}><Stat label="Active tenants" big /></button>
+        <button type="button" className="text-left" onClick={() => window.location.hash = "#super-admin-user-creation"}><Stat label="Total users" /></button>
+        <button type="button" className="text-left" onClick={() => notify("Monthly exam activity opened")}><Stat label="Exams this month" /></button>
+        <button type="button" className="text-left" onClick={() => notify("Revenue summary opened")}><Stat label="MRR" /></button>
       </div>
+
+      {notice ? <div role="status" className="rounded-md border border-neutral-300 bg-white px-3 py-2 text-[11px] text-neutral-600">{notice}</div> : null}
 
       <div className="grid grid-cols-3 gap-4">
         <Panel
@@ -83,51 +101,54 @@ export function SuperAdminScreen() {
           className="col-span-2"
           action={
             <div className="flex gap-2">
-              <Btn variant="outline" size="sm">
-                ⌕ Filter
-              </Btn>
-              <Btn size="sm">+ Add Tenant</Btn>
+              <Btn variant="outline" size="sm" onClick={() => setShowFilter((value) => !value)}>⌕ Filter</Btn>
+              <Btn size="sm" onClick={() => setShowAddTenant(true)}>+ Add Tenant</Btn>
             </div>
           }
         >
+          {showFilter ? (
+            <div className="mb-3 flex items-center gap-2 rounded-md border border-dashed border-neutral-300 bg-neutral-50 p-2">
+              <Label>Plan</Label><button type="button" className="rounded border border-neutral-300 bg-white px-2 py-1 text-[10px]" onClick={() => notify("Showing Enterprise tenants")}>Enterprise</button>
+              <button type="button" className="rounded border border-neutral-300 bg-white px-2 py-1 text-[10px]" onClick={() => notify("Showing active tenants")}>Active only</button>
+              <button type="button" className="ml-auto text-[10px] text-neutral-500 underline" onClick={() => setShowFilter(false)}>Close</button>
+            </div>
+          ) : null}
           <Table
             columns={["College", "Plan", "Users", "Status", ""]}
             widths={["2fr", "1fr", "0.8fr", "1fr", "0.6fr"]}
-            rows={[
-              [<Line key="a" w="80%" />, <Badge key="b" tone="dark">Enterprise</Badge>, "1,240", <Badge key="c">Active</Badge>, <Btn key="d" size="sm" variant="ghost">⋯</Btn>],
-              [<Line key="a" w="70%" />, <Badge key="b">Pro</Badge>, "620", <Badge key="c">Active</Badge>, <Btn key="d" size="sm" variant="ghost">⋯</Btn>],
-              [<Line key="a" w="85%" />, <Badge key="b" tone="outline">Trial</Badge>, "90", <Badge key="c" tone="hatch">Suspended</Badge>, <Btn key="d" size="sm" variant="ghost">⋯</Btn>],
-              [<Line key="a" w="60%" />, <Badge key="b">Pro</Badge>, "410", <Badge key="c">Active</Badge>, <Btn key="d" size="sm" variant="ghost">⋯</Btn>],
-            ]}
+            rows={tenants.map((tenant, index) => [
+              <button key="name" type="button" className="text-left" onClick={() => notify(`${tenant} details opened`)}><Line w={["80%", "70%", "85%", "60%"][index]} /></button>,
+              <Badge key="plan" tone={index === 0 ? "dark" : index === 2 ? "outline" : undefined}>{index === 0 ? "Enterprise" : index === 2 ? "Trial" : "Pro"}</Badge>,
+              ["1,240", "620", "90", "410"][index],
+              <button key="status" type="button" onClick={() => notify(`${tenant} status details opened`)}><Badge tone={index === 2 ? "hatch" : undefined}>{index === 2 ? "Suspended" : "Active"}</Badge></button>,
+              <div key="actions" className="relative"><Btn size="sm" variant="ghost" onClick={() => setOpenTenant(openTenant === tenant ? null : tenant)}>⋯</Btn>{openTenant === tenant ? <div className="absolute right-0 top-8 z-10 flex w-32 flex-col gap-1 rounded-md border border-neutral-300 bg-white p-1 shadow-sm"><button type="button" className="px-2 py-1 text-left text-[10px] hover:bg-neutral-100" onClick={() => notify(`${tenant} opened`)}>View details</button><button type="button" className="px-2 py-1 text-left text-[10px] hover:bg-neutral-100" onClick={() => notify(`${tenant} settings opened`)}>Manage settings</button><button type="button" className="px-2 py-1 text-left text-[10px] hover:bg-neutral-100" onClick={() => notify(`${tenant} action confirmed`)}>Suspend tenant</button></div> : null}</div>,
+            ])}
           />
         </Panel>
 
         <div className="flex flex-col gap-4">
           <Panel title="Feature Flags">
             <div className="flex flex-col gap-2">
-              {["Proctoring v2", "AI item analysis", "NBA reports", "Offline exams"].map((f, i) => (
-                <div key={f} className="flex items-center justify-between">
-                  <Label>{f}</Label>
-                  <Toggle on={i % 2 === 0} />
+              {["Proctoring v2", "AI item analysis", "NBA reports", "Offline exams"].map((flag, index) => (
+                <div key={flag} className="flex items-center justify-between">
+                  <Label>{flag}</Label>
+                  <button type="button" aria-pressed={flags[index]} onClick={() => setFlags((current) => current.map((value, item) => item === index ? !value : value))}><Toggle on={flags[index]} /></button>
                 </div>
               ))}
             </div>
             <Note arrow="up" className="mt-2">Flags scoped per-tenant or global rollout.</Note>
           </Panel>
+          <Panel title="Quick actions">
+            <div className="flex flex-col gap-2"><Btn size="sm" onClick={() => window.location.hash = "#super-admin-user-creation"}>Create users</Btn><Btn size="sm" variant="outline" onClick={() => notify("Platform report exported")}>Export platform report</Btn></div>
+          </Panel>
         </div>
       </div>
 
       <Panel title="Platform Usage (last 30 days)">
-        <div className="grid grid-cols-4 items-center gap-4">
-          <div className="col-span-3">
-            <BarChart heights={[40, 62, 48, 70, 55, 80, 66, 90, 72, 84, 60, 95]} />
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Donut />
-            <Label muted>Storage used</Label>
-          </div>
-        </div>
+        <div className="grid grid-cols-4 items-center gap-4"><div className="col-span-3"><button type="button" className="w-full text-left" onClick={() => notify("Usage analytics opened")}><BarChart heights={[40, 62, 48, 70, 55, 80, 66, 90, 72, 84, 60, 95]} /></button></div><button type="button" className="flex flex-col items-center gap-2" onClick={() => notify("Storage details opened")}><Donut /><Label muted>Storage used</Label></button></div>
       </Panel>
+
+      {showAddTenant ? <div role="dialog" aria-label="Add tenant" className="rounded-md border border-neutral-400 bg-white p-4 shadow-sm"><div className="flex items-center justify-between"><span className="text-[12px] font-semibold text-neutral-700">Add a tenant</span><button type="button" className="text-[12px] text-neutral-500" onClick={() => setShowAddTenant(false)}>Close</button></div><div className="mt-3 grid grid-cols-2 gap-2"><Field label="College name" placeholder="[enter college]" /><Field label="Admin email" placeholder="[admin@institute.edu]" /></div><div className="mt-3 flex justify-end gap-2"><Btn variant="outline" size="sm" onClick={() => setShowAddTenant(false)}>Cancel</Btn><Btn size="sm" onClick={() => { setShowAddTenant(false); notify("Tenant creation queued") }}>Create tenant</Btn></div></div> : null}
     </AppShell>
   )
 }
