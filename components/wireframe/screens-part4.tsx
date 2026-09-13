@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { AppShell, PageHead, roleNav } from "./shell"
 import { Avatar, Badge, Btn, Eyebrow, Field, Label, Lines, Note, Panel, Select, Table, Toggle } from "./kit"
 
@@ -60,12 +61,47 @@ export function DepartmentManagementScreen() {
   </AppShell>
 }
 
+const batchRows = [
+  ["2024–2028 CSE Batch A", "CSE", "2024", "140", "72%", "88%", "7", "Active"],
+  ["2024–2028 CSE Batch B", "CSE", "2024", "138", "68%", "84%", "11", "Active"],
+  ["2024–2028 ECE Batch A", "ECE", "2024", "120", "70%", "86%", "6", "Active"],
+  ["2023–2027 MECH Batch A", "MECH", "2023", "110", "65%", "80%", "14", "Active"],
+  ["2023–2027 CIVIL Batch A", "CIVIL", "2023", "95", "62%", "78%", "12", "Active"],
+  ["2025–2029 CSE Batch A", "CSE", "2025", "132", "76%", "91%", "4", "Active"],
+  ["2025–2029 ECE Batch A", "ECE", "2025", "118", "73%", "89%", "5", "Active"],
+  ["2022–2026 IT Batch A", "IT", "2022", "128", "81%", "94%", "2", "Active"],
+  ["2022–2026 MBA Batch A", "MBA", "2022", "64", "69%", "83%", "8", "Active"],
+  ["2021–2025 CSE Batch A", "CSE", "2021", "136", "84%", "96%", "1", "Graduated"],
+  ["2021–2025 EEE Batch A", "EEE", "2021", "88", "78%", "92%", "3", "Graduated"],
+  ["2020–2024 CIVIL Batch A", "CIVIL", "2020", "76", "71%", "87%", "5", "Archived"],
+]
+
 export function BatchManagementScreen() {
-  return <AppShell role="College Admin" nav={roleNav.collegeAdmin} active="Users" trail={["College Admin", "Batches"]} minWidth={980}>
-    <PageHead title="Batch management" actions={<Btn size="sm">+ Add batch</Btn>} />
-    <div className="grid grid-cols-4 gap-3"><Panel title="Active batches"><StatValue value="[12]" label="running" /></Panel><Panel title="Current year"><StatValue value="[2025–26]" label="academic year" /></Panel><Panel title="Students"><StatValue value="[2,840]" label="enrolled" /></Panel><Panel title="Archive"><Btn variant="outline" size="sm">View archived</Btn></Panel></div>
-    <DirectoryTable title="Batches" type="Batch" />
+  const [selectedBatch, setSelectedBatch] = useState<string | null>(null)
+  const [modal, setModal] = useState<"create" | "assign" | null>(null)
+  const [status, setStatus] = useState("All")
+  const visibleRows = status === "All" ? batchRows : batchRows.filter((row) => row[7] === status)
+
+  return <AppShell role="College Admin" nav={roleNav.collegeAdmin} active="Batches" trail={["[College Name]", "Administration", "Batches"]} minWidth={1220}>
+    <PageHead title="Batches" actions={<div className="flex gap-2"><Btn variant="outline" size="sm">⭳ Export</Btn><Btn variant="outline" size="sm" onClick={() => setModal("assign")}>⇪ Import students</Btn><Btn size="sm" onClick={() => setModal("create")}>+ New Batch</Btn></div>} />
+    <div className="flex items-end justify-between gap-4"><div className="flex flex-col gap-1"><Label muted>24 active batches · 3,240 students assigned</Label><Field placeholder="Search batches…" w={260} /></div><div className="flex gap-2"><Select label="Department" value="All departments ▾" w={150} /><Select label="Year" value="2024 ▾" w={100} /><Select label="Sort" value="Name ▾" w={120} /></div></div>
+    <div className="flex items-center justify-between rounded border border-neutral-300 bg-neutral-50 p-2"><div className="flex gap-1">{["All", "Active", "Graduated", "Archived"].map((item) => <Btn key={item} size="sm" variant={status === item ? "solid" : "outline"} onClick={() => setStatus(item)}>{item}</Btn>)}</div><Note>Clicking a row opens the batch detail drawer.</Note></div>
+    <Panel title="Batch directory" action={<Label muted>{visibleRows.length} of 12 batches</Label>}>
+      <Table columns={["", "Batch name", "Department", "Year", "Students", "Avg. score", "Pass %", "At-risk", "Status", "Actions"]} widths={["0.25fr", "2fr", "0.7fr", "0.5fr", "0.65fr", "0.7fr", "0.6fr", "0.6fr", "0.8fr", "0.5fr"]} rows={visibleRows.map((row, index) => [<span key={`check-${index}`} className="text-neutral-400">□</span>, <button type="button" key={`name-${index}`} className="text-left font-medium text-neutral-700 underline-offset-2 hover:underline" onClick={() => setSelectedBatch(row[0])}>{row[0]}</button>, row[1], row[2], row[3], row[4], row[5], <span key={`risk-${index}`} className={Number.parseInt(row[6]) > 10 ? "font-semibold text-neutral-700" : "text-neutral-500"}>{row[6]}</span>, <Badge key={`status-${index}`} tone={row[7] === "Archived" ? "hatch" : row[7] === "Graduated" ? "outline" : undefined}>{row[7]}</Badge>, <Btn key={`menu-${index}`} variant="ghost" size="sm">⋯</Btn>])} />
+      <div className="mt-3 flex items-center justify-between border-t border-dashed border-neutral-200 pt-3"><Label muted>Showing {visibleRows.length} of 12 batches</Label><Note>At-risk count = students below 40% average in the last 3 assessments.</Note></div>
+    </Panel>
+    <div className="grid grid-cols-3 gap-3"><Note>Batch-level rules override department defaults, including grading scheme and exam timing.</Note><Note arrow="up">Students can belong to only one batch at a time. Reassigning moves them.</Note><Note>Archiving preserves student records but hides the batch from active lists.</Note></div>
+    {selectedBatch ? <BatchDetailDrawer batch={selectedBatch} onClose={() => setSelectedBatch(null)} onAssign={() => setModal("assign")} /> : null}
+    {modal ? <BatchModal kind={modal} onClose={() => setModal(null)} /> : null}
   </AppShell>
+}
+
+function BatchDetailDrawer({ batch, onClose, onAssign }: { batch: string; onClose: () => void; onAssign: () => void }) {
+  return <div className="fixed inset-y-0 right-0 z-20 flex w-[360px] flex-col border-l border-neutral-300 bg-white p-4 shadow-xl"><div className="flex items-start justify-between border-b border-neutral-200 pb-3"><div className="flex flex-col gap-1"><Eyebrow>Batch detail</Eyebrow><span className="text-[13px] font-semibold text-neutral-700">{batch}</span><Label muted>CSE · Year 2024 · 140 students</Label></div><Btn variant="ghost" size="sm" onClick={onClose}>×</Btn></div><div className="grid grid-cols-2 gap-2 py-3">{[["Avg. score", "72%"], ["Pass", "88%"], ["At-risk", "7"], ["Exams taken", "12"]].map(([label, value]) => <div key={label} className="rounded border border-neutral-200 bg-neutral-50 p-2"><Label muted>{label}</Label><div className="text-[15px] font-semibold text-neutral-700">{value}</div></div>)}</div><div className="flex gap-3 border-b border-neutral-200"><Btn variant="ghost" size="sm">Students</Btn><Btn variant="ghost" size="sm">Courses</Btn><Btn variant="ghost" size="sm">Exams</Btn><Btn variant="ghost" size="sm">Reports</Btn></div><div className="flex flex-1 flex-col gap-2 overflow-auto py-3"><Label>Students</Label>{Array.from({ length: 6 }, (_, index) => <div key={index} className="flex items-center justify-between border-b border-dashed border-neutral-200 pb-2"><div><span className="block text-[10px] text-neutral-600">[Student {String(index + 1).padStart(2, "0")}]</span><span className="text-[9px] text-neutral-400">[HU-CSE-{100 + index}] · {68 + index}%</span></div><Badge>{index === 4 ? "At risk" : "Active"}</Badge></div>)}</div><div className="flex gap-2 border-t border-neutral-200 pt-3"><Btn size="sm">Edit batch</Btn><Btn variant="outline" size="sm" onClick={onAssign}>Assign students</Btn><Btn variant="outline" size="sm">Archive</Btn></div></div>
+}
+
+function BatchModal({ kind, onClose }: { kind: "create" | "assign"; onClose: () => void }) {
+  return <div className="fixed inset-0 z-20 flex items-center justify-center bg-neutral-900/20 p-4"><div className="w-full max-w-[620px] rounded-lg border border-neutral-300 bg-white p-5 shadow-xl"><div className="flex items-start justify-between border-b border-neutral-200 pb-3"><div className="flex flex-col gap-1"><Eyebrow>{kind === "create" ? "Create batch" : "Assign students"}</Eyebrow><span className="text-[14px] font-semibold text-neutral-700">{kind === "create" ? "New batch details" : "Select students for this batch"}</span></div><Btn variant="ghost" size="sm" onClick={onClose}>×</Btn></div>{kind === "create" ? <div className="grid grid-cols-2 gap-3 py-4"><Field label="Batch name" placeholder="2025–2029 CSE Batch A" /><Select label="Department" value="Select department ▾" /><Field label="Year" placeholder="2025" /><Field label="Section (optional)" placeholder="A" /><div className="col-span-2"><Field label="Description" placeholder="Batch description" /></div><Note className="col-span-2">Batch name must be unique within a department.</Note></div> : <div className="flex flex-col gap-3 py-4"><Field placeholder="Search students…" /><div className="grid grid-cols-4 border-b border-neutral-200 pb-2"><Label>Student</Label><Label>Roll No</Label><Label>Current batch</Label><Label>Select</Label></div>{["[Student 01]", "[Student 02]", "[Student 03]", "[Student 04]"].map((student) => <div key={student} className="grid grid-cols-4 items-center border-b border-dashed border-neutral-200 py-2"><Label>{student}</Label><Label muted>[HU-CSE-10]</Label><Label muted>Unassigned</Label><span className="text-neutral-500">□</span></div>)}<Note>128 students selected · Reassigning moves students from their current batch.</Note></div>}<div className="flex justify-end gap-2 border-t border-neutral-200 pt-3"><Btn variant="outline" size="sm" onClick={onClose}>Cancel</Btn><Btn size="sm" onClick={onClose}>{kind === "create" ? "Create" : "Assign to batch"}</Btn></div></div></div>
 }
 
 export function StudentDirectoryScreen() {
