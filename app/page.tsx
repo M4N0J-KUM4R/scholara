@@ -1,4 +1,6 @@
-import type { ReactNode } from "react"
+"use client"
+
+import { useEffect, useState, type ReactNode } from "react"
 import {
   CollegeAdminDestinationScreen,
   CollegeAdminScreen,
@@ -238,6 +240,14 @@ const screens: Screen[] = [
 ]
 
 export default function Page() {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) return null
+
   return (
     <div className="min-h-screen bg-neutral-100 text-neutral-800">
       {/* Kit header */}
