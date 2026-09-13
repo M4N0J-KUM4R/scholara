@@ -125,11 +125,13 @@ export function Btn({
   variant = "solid",
   size = "md",
   className = "",
+  onClick,
 }: {
   children: ReactNode
   variant?: "solid" | "outline" | "ghost"
   size?: "sm" | "md"
   className?: string
+  onClick?: () => void
 }) {
   const base =
     "inline-flex items-center justify-center gap-1 rounded font-medium whitespace-nowrap select-none"
@@ -140,7 +142,11 @@ export function Btn({
       : variant === "outline"
         ? "bg-white text-neutral-600 border border-neutral-400"
         : "bg-transparent text-neutral-500 border border-transparent"
-  return <span className={`${base} ${sizes} ${variants} ${className}`}>{children}</span>
+  return (
+    <button type="button" onClick={onClick} className={`${base} ${sizes} ${variants} ${className}`}>
+      {children}
+    </button>
+  )
 }
 
 export function Field({

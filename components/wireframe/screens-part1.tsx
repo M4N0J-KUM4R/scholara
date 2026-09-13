@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import {
   Badge,
   Bar,
@@ -76,10 +76,22 @@ export function SuperAdminScreen() {
   const [openTenant, setOpenTenant] = useState<string | null>(null)
   const [flags, setFlags] = useState([true, false, true, false])
   const [notice, setNotice] = useState("")
+  const noticeTimer = useRef<number | null>(null)
+
+  useEffect(() => {
+    return () => {
+      if (noticeTimer.current !== null) {
+        window.clearTimeout(noticeTimer.current)
+      }
+    }
+  }, [])
 
   const notify = (message: string) => {
     setNotice(message)
-    window.setTimeout(() => setNotice(""), 2600)
+    if (noticeTimer.current !== null) {
+      window.clearTimeout(noticeTimer.current)
+    }
+    noticeTimer.current = window.setTimeout(() => setNotice(""), 2600)
   }
 
   const tenants = ["Northbridge College", "Horizon Institute", "Lakeside University", "Pioneer Academy"]
