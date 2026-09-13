@@ -321,6 +321,41 @@ export function CollegeAdminScreen() {
   )
 }
 
+/* College Admin destination pages ----------------------------------- */
+export function CollegeAdminDestinationScreen({ kind }: { kind: "departments" | "users" | "courses" | "exams" | "reports" | "settings" }) {
+  const content = {
+    departments: { title: "Departments", description: "Review the departments inferred from faculty and student records." },
+    users: { title: "Users", description: "View college users provisioned by the Super Admin." },
+    courses: { title: "Courses", description: "Manage course ownership, enrollment and faculty assignments." },
+    exams: { title: "Exams", description: "Coordinate exam schedules, review status and publishing controls." },
+    reports: { title: "Reports", description: "Open college-level academic, outcome and examination reports." },
+    settings: { title: "Settings", description: "Configure college branding, roles and institute preferences." },
+  }[kind]
+
+  return (
+    <AppShell role="College Admin" nav={roleNav.collegeAdmin} active={content.title} trail={["[College Name]", content.title]} minWidth={980}>
+      <PageHead title={content.title} actions={<Btn size="sm">+ New {content.title === "Users" ? "view" : content.title.slice(0, -1)}</Btn>} />
+      <div className="grid grid-cols-3 gap-4">
+        <Panel title={content.title} className="col-span-2">
+          <div className="flex flex-col gap-2">
+            <Label muted>{content.description}</Label>
+            {[1, 2, 3, 4].map((item) => (
+              <div key={item} className="flex items-center justify-between rounded border border-neutral-200 p-2">
+                <div className="flex flex-col gap-1"><Line w={`${55 + item * 8}%`} /><Line w="40%" /></div>
+                <Badge tone={item === 3 ? "hatch" : "outline"}>{item === 3 ? "Review" : "Active"}</Badge>
+              </div>
+            ))}
+          </div>
+        </Panel>
+        <Panel title="Quick actions">
+          <div className="flex flex-col gap-2"><Btn size="sm">Export {content.title.toLowerCase()}</Btn><Btn variant="outline" size="sm">Open filters</Btn></div>
+          <Note arrow="up" className="mt-3">College Admin access is limited to this institute.</Note>
+        </Panel>
+      </div>
+    </AppShell>
+  )
+}
+
 /* 4 — Faculty dashboard -------------------------------------------- */
 export function FacultyScreen() {
   return (
