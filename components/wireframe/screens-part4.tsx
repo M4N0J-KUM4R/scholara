@@ -1,7 +1,7 @@
 "use client"
 
 import { AppShell, PageHead, roleNav } from "./shell"
-import { Badge, Btn, Field, Label, Lines, Note, Panel, Select, Table, Toggle } from "./kit"
+import { Avatar, Badge, Btn, Eyebrow, Field, Label, Lines, Note, Panel, Select, Table, Toggle } from "./kit"
 
 const rows = Array.from({ length: 10 }, (_, index) => index + 1)
 const placeholderRows = (type: string) => rows.map((index) => [
@@ -19,12 +19,44 @@ function DirectoryTable({ title, type }: { title: string; type: string }) {
   </Panel>
 }
 
+const departmentRows = [
+  ["Computer Science & Engineering", "CSE", "Dr. [Name]", "24", "840", "18", "3", "Active"],
+  ["Electronics & Communication", "ECE", "Dr. [Name]", "18", "620", "14", "2", "Active"],
+  ["Mechanical Engineering", "MECH", "[Unassigned]", "16", "540", "12", "1", "Active"],
+  ["Civil Engineering", "CIVIL", "Dr. [Name]", "12", "410", "10", "0", "Active"],
+  ["Electrical Engineering", "EEE", "Dr. [Name]", "14", "380", "11", "2", "Active"],
+  ["Information Technology", "IT", "Dr. [Name]", "20", "590", "16", "4", "Active"],
+  ["MBA", "MBA", "Dr. [Name]", "10", "240", "8", "1", "Active"],
+  ["Applied Sciences", "AS", "Dr. [Name]", "8", "0", "6", "0", "Active"],
+  ["Architecture", "ARC", "[Unassigned]", "6", "120", "5", "0", "Active"],
+  ["Biotechnology", "BIO", "Dr. [Name]", "7", "180", "6", "1", "Active"],
+  ["Commerce", "COM", "Dr. [Name]", "9", "210", "7", "1", "Active"],
+  ["Humanities", "HUM", "[Unassigned]", "4", "100", "4", "0", "Archived"],
+]
+
 export function DepartmentManagementScreen() {
-  return <AppShell role="College Admin" nav={roleNav.collegeAdmin} active="Departments" trail={["College Admin", "Departments"]} minWidth={980}>
-    <PageHead title="Department management" actions={<Btn size="sm">+ Add department</Btn>} />
-    <Note>Departments are inferred from Super Admin user creation and can be reviewed here. Manual additions require permission.</Note>
-    <div className="grid grid-cols-3 gap-4"><Panel title="Department summary"><div className="flex flex-col gap-3"><span className="text-2xl font-semibold text-neutral-700">[08]</span><Label muted>active departments</Label><Badge>Auto-synced</Badge></div></Panel><Panel title="Heads of department"><Lines count={4} /><Note className="mt-2">HOD assignment follows faculty records.</Note></Panel><Panel title="Sync status"><Badge>Up to date</Badge><Label muted>Last sync: [Today, 09:40]</Label></Panel></div>
-    <DirectoryTable title="Departments" type="Department" />
+  const tableRows = departmentRows.map((row, index) => [
+    <span key={`dept-${index}`} className="font-medium text-neutral-700">{row[0]}</span>,
+    <span key={`code-${index}`} className="font-mono text-[10px] text-neutral-500">{row[1]}</span>,
+    <div key={`hod-${index}`} className="flex items-center gap-2">{row[2] === "[Unassigned]" ? <Btn variant="outline" size="sm">Assign</Btn> : <><Avatar size={20} label="D" /><span>{row[2]}</span></>}</div>,
+    row[3], row[4], row[5], row[6],
+    <Badge key={`status-${index}`} tone={row[7] === "Archived" ? "hatch" : undefined}>{row[7]}</Badge>,
+    <Btn key={`actions-${index}`} variant="ghost" size="sm">⋯</Btn>,
+  ])
+
+  return <AppShell role="College Admin" nav={roleNav.collegeAdmin} active="Departments" trail={["[College Name]", "Administration", "Departments"]} minWidth={1220}>
+    <PageHead title="Departments" actions={<div className="flex gap-2"><Btn variant="outline" size="sm">⭳ Export list</Btn><Btn size="sm">+ New Department</Btn></div>} />
+    <div className="mb-4 flex items-center justify-between"><Label muted>8 departments · 142 faculty · 3,240 students</Label><Field placeholder="Search departments…" w={220} /></div>
+    <div className="mb-4 flex items-center justify-between rounded border border-neutral-300 bg-neutral-50 p-2"><div className="flex items-center gap-1"><Btn size="sm">All</Btn><Btn variant="outline" size="sm">Active</Btn><Btn variant="outline" size="sm">Archived</Btn></div><div className="flex items-center gap-2"><Label>HOD assigned</Label><Btn variant="outline" size="sm">Yes</Btn><Btn variant="outline" size="sm">No</Btn><Select value="Sort by: Name ▾" w={130} /></div></div>
+    <div className="grid grid-cols-[minmax(0,1fr)_250px] gap-4">
+      <Panel title="Department directory" action={<Label muted>12 departments</Label>}>
+        <Table columns={["", "Dept Name", "Code", "HOD", "Faculty", "Students", "Courses", "Exams", "Status", ""]} widths={["0.3fr", "2fr", "0.6fr", "1.5fr", "0.6fr", "0.7fr", "0.6fr", "0.5fr", "0.8fr", "0.4fr"]} rows={tableRows.map((row, index) => [<span key={`check-${index}`} className="text-neutral-400">□</span>, ...row])} />
+        <div className="mt-3 flex items-center justify-between border-t border-dashed border-neutral-200 pt-3"><Label muted>Showing 12 of 12 departments</Label><Note arrow="up">Hover row reveals Edit and ⋯ menu.</Note></div>
+      </Panel>
+      <div className="flex flex-col gap-4"><Panel title="Assign HOD"><Select label="Faculty from [Dept Name]" value="Select faculty ▾" /><Note className="mt-2">Only faculty with “HOD-eligible” flag appear here.</Note><div className="mt-3 flex justify-end gap-2"><Btn variant="outline" size="sm">Cancel</Btn><Btn size="sm">Assign</Btn></div></Panel><Panel title="Create Department"><Field label="Department name" placeholder="[e.g. Computer Science]" /><Field label="Code" placeholder="[CSE]" hint="Code must be unique." /><Select label="HOD" value="Select faculty ▾" /><Field label="Description" placeholder="[Department description]" /><Select label="Status" value="Active ▾" /><Note className="mt-2">HOD can be assigned later.</Note><div className="mt-3 flex justify-end gap-2"><Btn variant="outline" size="sm">Cancel</Btn><Btn size="sm">Create</Btn></div></Panel></div>
+    </div>
+    <div className="mt-4 grid grid-cols-3 gap-3"><Note>Only Super Admin can create the first department. College Admin can add more after onboarding.</Note><Note>Archiving hides a department from dropdowns but preserves historical data.</Note><Note>HOD assignment triggers an email notification and grants HOD permissions.</Note></div>
+    <div className="mt-4 grid grid-cols-3 gap-3"><Panel title="Empty state"><Label muted>No departments yet. Create your first department to get started.</Label><Btn className="mt-3" size="sm">+ New Department</Btn></Panel><Panel title="Loading state"><Lines count={3} /></Panel><Panel title="Permission denied"><Badge tone="hatch">You don&apos;t have permission to manage departments. Contact your Super Admin.</Badge></Panel></div>
   </AppShell>
 }
 
