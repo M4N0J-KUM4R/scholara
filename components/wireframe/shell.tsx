@@ -32,7 +32,7 @@ export function TopBar({ showTenantSwitcher = true }: { showTenantSwitcher?: boo
           <span className="text-[12px] font-semibold text-neutral-600">CollegeCloud</span>
         </div>
         {showTenantSwitcher ? (
-          <div className="flex items-center gap-2 rounded border border-dashed border-neutral-400 bg-neutral-50 px-2 py-1">
+          <div aria-label="Tenant switcher" className="flex items-center gap-2 rounded border border-dashed border-neutral-400 bg-neutral-50 px-2 py-1">
             <Icon glyph="⌂" size={18} />
             <div className="flex flex-col">
               <span className="text-[8px] uppercase tracking-wide text-neutral-400">Tenant</span>
@@ -42,7 +42,7 @@ export function TopBar({ showTenantSwitcher = true }: { showTenantSwitcher?: boo
         ) : null}
       </div>
       <div className="flex items-center gap-3">
-        <div className="flex h-7 w-56 items-center gap-1.5 rounded border border-neutral-300 bg-white px-2">
+        <div role="search" aria-label="Global search" className="flex h-7 w-56 items-center gap-1.5 rounded border border-neutral-300 bg-white px-2 max-md:hidden">
           <span className="text-[10px] text-neutral-400">⌕</span>
           <span className="text-[10px] text-neutral-400">Search…</span>
         </div>
@@ -65,7 +65,7 @@ export function Sidebar({
   role: string
 }) {
   return (
-    <aside className="w-48 shrink-0 border-r border-neutral-200 bg-neutral-50 p-2">
+    <aside aria-label={`${role} navigation`} className="w-48 shrink-0 border-r border-neutral-200 bg-neutral-50 p-2 max-md:w-12 max-md:px-1">
       <div className="mb-2 px-2 py-1">
         <Eyebrow>{role}</Eyebrow>
       </div>

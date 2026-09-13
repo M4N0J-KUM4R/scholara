@@ -82,7 +82,7 @@ const screens: Screen[] = [
   },
   {
     id: "question-bank",
-    n: 6,
+    n: 7,
     title: "Question Bank",
     desc: "Filter by subject, unit, Bloom's taxonomy, difficulty and type. Preview panel and bulk import.",
     role: "Faculty",
@@ -90,7 +90,7 @@ const screens: Screen[] = [
   },
   {
     id: "validation",
-    n: 7,
+    n: 8,
     title: "Validation Workflow",
     desc: "Submission → HOD review → Exam Cell approval, with comments, version history and status badges.",
     role: "HOD / Exam Cell",
@@ -98,7 +98,7 @@ const screens: Screen[] = [
   },
   {
     id: "exam-management",
-    n: 8,
+    n: 9,
     title: "Exam Management",
     desc: "Schedule, student list, accommodations, proctoring settings and publish / unpublish controls.",
     role: "Exam Controller",
@@ -106,7 +106,7 @@ const screens: Screen[] = [
   },
   {
     id: "student",
-    n: 9,
+    n: 10,
     title: "Student Dashboard",
     desc: "Enrolled courses with progress, upcoming exams, recent results and notifications.",
     role: "Student",
@@ -114,7 +114,7 @@ const screens: Screen[] = [
   },
   {
     id: "exam-taking",
-    n: 10,
+    n: 11,
     title: "Exam Taking Interface (MCQ)",
     desc: "Countdown timer, question palette, navigation, flag-for-review and guarded submit.",
     role: "Student",
@@ -122,7 +122,7 @@ const screens: Screen[] = [
   },
   {
     id: "exam-coding",
-    n: 10,
+    n: 12,
     title: "Exam Taking — Coding Question",
     desc: "Problem statement with constraints, language selector, code editor and a run/test console showing sample vs hidden test cases. Same proctored top bar, palette and guarded submit.",
     role: "Student",
@@ -130,7 +130,7 @@ const screens: Screen[] = [
   },
   {
     id: "exam-lab",
-    n: 10,
+    n: 13,
     title: "Exam Taking — Lab Question",
     desc: "KillerKoda-style split: instructions with an automated step checklist on the left, a Monaco-style editor (file tabs, explorer) and a live sandbox terminal on the right. Check task runs the grader for the active step.",
     role: "Student",
@@ -138,7 +138,7 @@ const screens: Screen[] = [
   },
   {
     id: "grading",
-    n: 11,
+    n: 14,
     title: "Grading & Moderation",
     desc: "Auto-graded vs manual, rubric grading, moderation panel and re-evaluation requests.",
     role: "Faculty / Moderator",
@@ -146,7 +146,7 @@ const screens: Screen[] = [
   },
   {
     id: "reports",
-    n: 12,
+    n: 15,
     title: "Reports & Analytics",
     desc: "Student progress, item analysis (difficulty / discrimination), outcome attainment and NAAC/NBA exports.",
     role: "Auditor / Admin",
@@ -154,7 +154,7 @@ const screens: Screen[] = [
   },
   {
     id: "settings",
-    n: 13,
+    n: 16,
     title: "Tenant Settings",
     desc: "Branding, roles & permissions matrix, integrations and billing — scoped to a single tenant.",
     role: "College Admin",
@@ -208,14 +208,14 @@ export default function Page() {
 
           {/* Index */}
           <nav className="flex flex-wrap gap-2 pt-1">
-            {screens.map((s, i) => (
+            {screens.map((s) => (
               <a
                 key={s.id}
                 href={`#${s.id}`}
                 className="flex items-center gap-1.5 rounded border border-neutral-300 bg-white px-2.5 py-1 text-[11px] text-neutral-600 transition-colors hover:border-neutral-500 hover:bg-neutral-50"
               >
                 <span className="flex h-4 w-4 items-center justify-center rounded-full bg-neutral-200 text-[9px] font-bold text-neutral-500">
-                  {i + 1}
+                  {s.n}
                 </span>
                 {s.title}
               </a>
@@ -226,13 +226,13 @@ export default function Page() {
 
       {/* Gallery */}
       <main className="mx-auto grid max-w-[1200px] grid-cols-1 gap-8 px-6 py-8">
-        {screens.map((s, i) => (
+        {screens.map((s) => (
           <section key={s.id} id={s.id} className="scroll-mt-6">
             <article className="overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-sm">
               <header className="flex items-start justify-between gap-4 border-b border-neutral-200 px-5 py-4">
                 <div className="flex items-start gap-3">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-neutral-700 text-[12px] font-bold text-neutral-50">
-                    {i + 1}
+                    {s.n}
                   </span>
                   <div className="flex flex-col gap-1">
                     <h2 className="text-[15px] font-semibold text-neutral-800">{s.title}</h2>
