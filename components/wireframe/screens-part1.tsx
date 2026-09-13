@@ -267,20 +267,6 @@ export function CollegeAdminScreen() {
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <Panel title="Departments" action={<Btn size="sm">+ Add</Btn>}>
-          <div className="flex flex-col gap-2">
-            {["[Dept — CSE]", "[Dept — ECE]", "[Dept — MECH]", "[Dept — MBA]"].map((d) => (
-              <div key={d} className="flex items-center justify-between rounded border border-neutral-200 px-2 py-1.5">
-                <div className="flex items-center gap-2">
-                  <Icon glyph="⧉" size={18} />
-                  <Label>{d}</Label>
-                </div>
-                <span className="text-[9px] text-neutral-400">HOD ✓</span>
-              </div>
-            ))}
-          </div>
-        </Panel>
-
         <Panel
           title="Users & Roles"
           action={<Badge tone="hatch">Managed by Super Admin</Badge>}
