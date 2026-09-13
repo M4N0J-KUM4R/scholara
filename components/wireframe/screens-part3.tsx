@@ -201,6 +201,300 @@ export function ExamTakingScreen() {
   )
 }
 
+/* 10b — Exam taking: Coding question ------------------------------- */
+export function ExamCodingScreen() {
+  return (
+    <Frame minWidth={940}>
+      <div className="flex items-center justify-between border-b border-neutral-200 bg-white px-4 py-2.5">
+        <div className="flex items-center gap-2">
+          <Icon glyph="✎" size={22} />
+          <span className="text-[12px] font-semibold text-neutral-600">[Exam Title]</span>
+          <Badge tone="outline">Attempt 1</Badge>
+        </div>
+        <div className="flex items-center gap-3">
+          <Badge tone="outline">● Proctoring on</Badge>
+          <div className="flex items-center gap-2 rounded border border-neutral-400 bg-neutral-100 px-3 py-1">
+            <span className="text-[10px] text-neutral-500">⏱</span>
+            <span className="text-[13px] font-bold tracking-widest text-neutral-700">00:38:04</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex gap-4 p-4">
+        <div className="flex min-w-0 flex-1 flex-col gap-4">
+          {/* Problem statement */}
+          <Panel title="Question 12 of 42">
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                <Badge tone="dark">Coding</Badge>
+                <Badge tone="outline">20 marks</Badge>
+                <Badge tone="outline">Time limit 1s / test</Badge>
+              </div>
+              <Lines count={3} />
+              <div className="rounded border border-dashed border-neutral-300 p-2">
+                <Eyebrow>Constraints</Eyebrow>
+                <div className="mt-1.5">
+                  <Lines count={2} widths={["55%", "40%"]} />
+                </div>
+              </div>
+            </div>
+          </Panel>
+
+          {/* Code editor */}
+          <Panel
+            title="Solution"
+            action={
+              <div className="flex items-center gap-2">
+                <Select value="Language: [C++17] ▾" w={150} />
+                <Badge tone="outline">Auto-saved</Badge>
+              </div>
+            }
+          >
+            <div className="overflow-hidden rounded border border-neutral-300">
+              <div className="flex items-center gap-2 border-b border-neutral-200 bg-neutral-100 px-2 py-1">
+                <span className="rounded bg-white px-2 py-0.5 text-[10px] text-neutral-600 shadow-sm">solution.cpp</span>
+                <span className="text-[10px] text-neutral-400">UTF-8 · LF</span>
+              </div>
+              <div className="flex bg-neutral-50 font-mono">
+                <div className="flex flex-col items-end gap-1 border-r border-neutral-200 bg-neutral-100 px-2 py-2 text-[9px] text-neutral-400">
+                  {Array.from({ length: 9 }).map((_, i) => (
+                    <span key={i}>{i + 1}</span>
+                  ))}
+                </div>
+                <div className="flex flex-1 flex-col gap-1 py-2 pl-3">
+                  {["70%", "45%", "82%", "60%", "38%", "74%", "52%", "66%", "30%"].map((w, i) => (
+                    <span key={i} className="h-2 rounded-sm bg-neutral-200" style={{ width: w }} />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </Panel>
+
+          {/* Run / test console */}
+          <Panel
+            title="Run & Test"
+            action={
+              <div className="flex gap-2">
+                <Btn size="sm" variant="outline">▷ Run sample</Btn>
+                <Btn size="sm">✓ Run all tests</Btn>
+              </div>
+            }
+          >
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex flex-col gap-1.5">
+                <Eyebrow>Sample test cases</Eyebrow>
+                {[
+                  ["Test 1", "Passed"],
+                  ["Test 2", "Passed"],
+                  ["Test 3 (hidden)", "Hidden"],
+                ].map(([t, s], i) => (
+                  <div key={i} className="flex items-center justify-between rounded border border-neutral-200 px-2 py-1.5">
+                    <Label>{t}</Label>
+                    <Badge tone={s === "Passed" ? "dark" : "hatch"}>{s === "Passed" ? "✓ Passed" : "◻ Hidden"}</Badge>
+                  </div>
+                ))}
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Eyebrow>Output console</Eyebrow>
+                <div className="flex-1 rounded border border-neutral-300 bg-neutral-800 p-2 font-mono">
+                  <div className="flex flex-col gap-1">
+                    <span className="h-1.5 w-[70%] rounded-sm bg-neutral-500" />
+                    <span className="h-1.5 w-[50%] rounded-sm bg-neutral-500" />
+                    <span className="h-1.5 w-[62%] rounded-sm bg-neutral-600" />
+                    <span className="mt-1 flex items-center gap-1 text-[9px] text-neutral-400">
+                      $ <span className="inline-block h-2 w-1 animate-pulse bg-neutral-300" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <Note arrow="up" className="mt-2">Hidden tests run on final submit; only pass/fail counts are shown to the student.</Note>
+          </Panel>
+
+          <div className="flex items-center justify-between">
+            <Btn variant="outline">← Previous</Btn>
+            <div className="flex gap-2">
+              <Btn variant="outline">⚑ Flag for review</Btn>
+              <Btn>Next →</Btn>
+            </div>
+          </div>
+        </div>
+
+        {/* Palette + submit */}
+        <div className="flex w-56 shrink-0 flex-col gap-4">
+          <Panel title="Question Palette">
+            <div className="grid grid-cols-5 gap-1.5">
+              {Array.from({ length: 20 }).map((_, i) => {
+                const state = i === 11 ? "current" : i < 8 ? "answered" : i === 9 ? "flagged" : "unseen"
+                const cls =
+                  state === "current"
+                    ? "border-neutral-700 bg-neutral-700 text-white"
+                    : state === "answered"
+                      ? "border-neutral-500 bg-neutral-300 text-neutral-700"
+                      : state === "flagged"
+                        ? "wf-bar border-neutral-500 text-neutral-800"
+                        : "border-neutral-300 bg-white text-neutral-400"
+                return (
+                  <span key={i} className={`flex h-6 w-6 items-center justify-center rounded border text-[9px] font-semibold ${cls}`}>
+                    {i + 1}
+                  </span>
+                )
+              })}
+            </div>
+            <Note arrow="up" className="mt-3">Coding questions show a ▷ glyph in the palette until at least one test passes.</Note>
+          </Panel>
+          <Btn className="w-full justify-center">Submit Exam</Btn>
+        </div>
+      </div>
+    </Frame>
+  )
+}
+
+/* 10c — Exam taking: Lab question (KillerKoda-style) --------------- */
+export function ExamLabScreen() {
+  return (
+    <Frame minWidth={940}>
+      <div className="flex items-center justify-between border-b border-neutral-200 bg-white px-4 py-2.5">
+        <div className="flex items-center gap-2">
+          <Icon glyph="✎" size={22} />
+          <span className="text-[12px] font-semibold text-neutral-600">[Exam Title]</span>
+          <Badge tone="outline">Attempt 1</Badge>
+        </div>
+        <div className="flex items-center gap-3">
+          <Badge tone="outline">◱ Sandbox: running</Badge>
+          <Badge tone="outline">● Proctoring on</Badge>
+          <div className="flex items-center gap-2 rounded border border-neutral-400 bg-neutral-100 px-3 py-1">
+            <span className="text-[10px] text-neutral-500">⏱</span>
+            <span className="text-[13px] font-bold tracking-widest text-neutral-700">00:24:47</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex gap-4 p-4">
+        {/* Instructions / tasks (left of split) */}
+        <div className="flex w-64 shrink-0 flex-col gap-3">
+          <Panel title="Q15 · Lab Task">
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <Badge tone="dark">Lab</Badge>
+                <Badge tone="outline">25 marks</Badge>
+              </div>
+              <Lines count={3} />
+            </div>
+          </Panel>
+          <Panel title="Steps">
+            <div className="flex flex-col gap-2">
+              {[
+                ["Step 1 — Setup", "done"],
+                ["Step 2 — Configure service", "active"],
+                ["Step 3 — Verify endpoint", "todo"],
+                ["Step 4 — Persist output", "todo"],
+              ].map(([t, s], i) => (
+                <div
+                  key={i}
+                  className={`flex items-center gap-2 rounded border px-2 py-1.5 ${
+                    s === "active" ? "border-neutral-500 bg-neutral-100" : "border-neutral-200"
+                  }`}
+                >
+                  <span
+                    className={`flex h-4 w-4 items-center justify-center rounded-full border text-[8px] ${
+                      s === "done"
+                        ? "border-neutral-600 bg-neutral-600 text-white"
+                        : s === "active"
+                          ? "border-neutral-600 text-neutral-700"
+                          : "border-neutral-300 text-neutral-400"
+                    }`}
+                  >
+                    {s === "done" ? "✓" : i + 1}
+                  </span>
+                  <Label>{t}</Label>
+                </div>
+              ))}
+              <Note arrow="up">Each step maps to an automated check; passing a check advances the stepper.</Note>
+            </div>
+          </Panel>
+        </div>
+
+        {/* Monaco editor + terminal (right of split) */}
+        <div className="flex min-w-0 flex-1 flex-col gap-3">
+          <Panel title="Editor" action={<Badge tone="outline">◱ Live container</Badge>}>
+            <div className="overflow-hidden rounded border border-neutral-300">
+              {/* file tabs */}
+              <div className="flex items-center gap-1 border-b border-neutral-200 bg-neutral-100 px-2 py-1">
+                {["main.py", "config.yaml", "README"].map((f, i) => (
+                  <span
+                    key={f}
+                    className={`rounded px-2 py-0.5 text-[10px] ${i === 0 ? "bg-white text-neutral-600 shadow-sm" : "text-neutral-400"}`}
+                  >
+                    {f}
+                  </span>
+                ))}
+              </div>
+              <div className="flex">
+                {/* mini file tree */}
+                <div className="w-28 shrink-0 border-r border-neutral-200 bg-neutral-50 p-2">
+                  <Eyebrow>Explorer</Eyebrow>
+                  <div className="mt-1.5 flex flex-col gap-1">
+                    {["▾ /app", "  main.py", "  config.yaml", "▸ /tests"].map((n, i) => (
+                      <span key={i} className="truncate text-[9px] text-neutral-500">{n}</span>
+                    ))}
+                  </div>
+                </div>
+                {/* code area */}
+                <div className="flex flex-1 bg-neutral-50 font-mono">
+                  <div className="flex flex-col items-end gap-1 border-r border-neutral-200 bg-neutral-100 px-2 py-2 text-[9px] text-neutral-400">
+                    {Array.from({ length: 7 }).map((_, i) => (
+                      <span key={i}>{i + 1}</span>
+                    ))}
+                  </div>
+                  <div className="flex flex-1 flex-col gap-1 py-2 pl-3">
+                    {["66%", "40%", "78%", "52%", "34%", "70%", "48%"].map((w, i) => (
+                      <span key={i} className="h-2 rounded-sm bg-neutral-200" style={{ width: w }} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Panel>
+
+          {/* Terminal */}
+          <Panel
+            title="Terminal"
+            action={
+              <div className="flex gap-2">
+                <Btn size="sm" variant="outline">↻ Reset sandbox</Btn>
+                <Btn size="sm">✓ Check task</Btn>
+              </div>
+            }
+          >
+            <div className="rounded border border-neutral-300 bg-neutral-800 p-3 font-mono">
+              <div className="flex flex-col gap-1.5">
+                <span className="flex items-center gap-1 text-[9px] text-neutral-400">
+                  student@lab:~$ <span className="h-1.5 w-[42%] rounded-sm bg-neutral-500" />
+                </span>
+                <span className="h-1.5 w-[68%] rounded-sm bg-neutral-600" />
+                <span className="h-1.5 w-[55%] rounded-sm bg-neutral-600" />
+                <span className="flex items-center gap-1 text-[9px] text-neutral-400">
+                  student@lab:~$ <span className="inline-block h-2.5 w-1 animate-pulse bg-neutral-300" />
+                </span>
+              </div>
+            </div>
+            <Note arrow="up" className="mt-2">Terminal is a real shell into the per-student container; "Check task" runs the grader for the active step.</Note>
+          </Panel>
+
+          <div className="flex items-center justify-between">
+            <Btn variant="outline">← Previous</Btn>
+            <div className="flex gap-2">
+              <Btn variant="outline">⚑ Flag for review</Btn>
+              <Btn>Submit Exam</Btn>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Frame>
+  )
+}
+
 /* 11 — Grading & moderation ---------------------------------------- */
 export function GradingScreen() {
   return (

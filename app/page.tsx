@@ -13,6 +13,8 @@ import {
   WizardScreen,
 } from "@/components/wireframe/screens-part2"
 import {
+  ExamCodingScreen,
+  ExamLabScreen,
   ExamTakingScreen,
   GradingScreen,
   ReportsScreen,
@@ -113,10 +115,26 @@ const screens: Screen[] = [
   {
     id: "exam-taking",
     n: 10,
-    title: "Exam Taking Interface",
+    title: "Exam Taking Interface (MCQ)",
     desc: "Countdown timer, question palette, navigation, flag-for-review and guarded submit.",
     role: "Student",
     render: () => <ExamTakingScreen />,
+  },
+  {
+    id: "exam-coding",
+    n: 10,
+    title: "Exam Taking — Coding Question",
+    desc: "Problem statement with constraints, language selector, code editor and a run/test console showing sample vs hidden test cases. Same proctored top bar, palette and guarded submit.",
+    role: "Student",
+    render: () => <ExamCodingScreen />,
+  },
+  {
+    id: "exam-lab",
+    n: 10,
+    title: "Exam Taking — Lab Question",
+    desc: "KillerKoda-style split: instructions with an automated step checklist on the left, a Monaco-style editor (file tabs, explorer) and a live sandbox terminal on the right. Check task runs the grader for the active step.",
+    role: "Student",
+    render: () => <ExamLabScreen />,
   },
   {
     id: "grading",
