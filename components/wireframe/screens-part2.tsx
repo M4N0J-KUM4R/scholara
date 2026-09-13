@@ -176,10 +176,11 @@ export function WizardScreen() {
 }
 
 /* Question type tabs */
-function TypeTabs({ active }: { active: "mcq" | "coding" }) {
+function TypeTabs({ active }: { active: "mcq" | "coding" | "lab" }) {
   const tabs = [
     ["mcq", "MCQ"],
     ["coding", "Coding"],
+    ["lab", "Lab"],
   ] as const
   return (
     <div className="flex items-center gap-1 rounded-md border border-neutral-300 bg-neutral-100 p-1">
@@ -381,6 +382,140 @@ export function AddQuestionScreen() {
           </div>
           <div className="col-span-1">
             <AutoValidation blocked={false} />
+          </div>
+        </div>
+      </Panel>
+
+      {/* ---- Lab variant (KillerKoda-style, Monaco + terminal) ---- */}
+      <Panel
+        title="Alternate type · Lab (interactive, KillerKoda-style)"
+        action={
+          <div className="flex items-center gap-2">
+            <Badge tone="outline">Monaco editor</Badge>
+            <Badge tone="outline">live sandbox</Badge>
+          </div>
+        }
+      >
+        <div className="grid grid-cols-3 gap-4">
+          {/* left: task / instructions steps */}
+          <div className="col-span-1 flex flex-col gap-3">
+            <div className="flex flex-col gap-1">
+              <Label>Lab scenario</Label>
+              <div className="rounded border border-neutral-300 p-2">
+                <Lines count={2} widths={["100%", "68%"]} />
+              </div>
+            </div>
+            <div className="rounded border border-dashed border-neutral-300 p-2">
+              <Eyebrow>Guided tasks (validated per step)</Eyebrow>
+              <div className="mt-2 flex flex-col gap-2">
+                {[
+                  ["Task 1 · scaffold project", "ok"],
+                  ["Task 2 · implement endpoint", "ok"],
+                  ["Task 3 · pass integration check", "warn"],
+                ].map(([t, s], i) => (
+                  <div key={i} className="flex items-center gap-2 rounded border border-neutral-200 bg-white px-2 py-1.5">
+                    <span
+                      className={`flex h-4 w-4 items-center justify-center rounded-full text-[9px] ${
+                        s === "ok" ? "bg-neutral-600 text-white" : "wf-bar text-neutral-700"
+                      }`}
+                    >
+                      {s === "ok" ? "✓" : "●"}
+                    </span>
+                    <Label>{t as string}</Label>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Select label="Base image" value="ubuntu:22.04 ▾" />
+              <Field label="Marks" placeholder="20" />
+            </div>
+            <Note arrow="up">Each task maps to an automated check run inside the sandbox.</Note>
+          </div>
+
+          {/* right: Monaco editor + terminal (killerkoda layout) */}
+          <div className="col-span-2 flex flex-col gap-3">
+            {/* editor pane with file tabs + tree + gutter */}
+            <div className="overflow-hidden rounded border border-neutral-300">
+              <div className="flex items-center justify-between border-b border-neutral-300 wf-bar px-2 py-1">
+                <div className="flex items-center gap-1">
+                  <span className="rounded-t border border-neutral-500 border-b-0 bg-white px-2 py-0.5 text-[9px] font-semibold text-neutral-700">
+                    server.js
+                  </span>
+                  <span className="px-2 py-0.5 text-[9px] text-neutral-500">package.json</span>
+                  <span className="px-2 py-0.5 text-[9px] text-neutral-500">README.md</span>
+                </div>
+                <span className="text-[9px] text-neutral-500">Monaco · JS</span>
+              </div>
+              <div className="flex bg-neutral-50 font-mono">
+                {/* mini file tree */}
+                <div className="w-28 shrink-0 border-r border-neutral-200 p-1.5">
+                  {[
+                    ["▾ src", 0],
+                    ["server.js", 1],
+                    ["routes.js", 1],
+                    ["▾ test", 0],
+                    ["e2e.spec.js", 1],
+                  ].map(([t, ind], i) => (
+                    <div
+                      key={i}
+                      style={{ paddingLeft: (ind as number) * 10 }}
+                      className={`truncate py-0.5 text-[9px] ${i === 1 ? "text-neutral-700" : "text-neutral-400"}`}
+                    >
+                      {t as string}
+                    </div>
+                  ))}
+                </div>
+                {/* code with gutter */}
+                <div className="flex-1">
+                  {[
+                    ["55%", true],
+                    ["72%", false],
+                    ["48%", false],
+                    ["66%", false],
+                    ["38%", true],
+                    ["60%", false],
+                  ].map(([w, dedent], i) => (
+                    <div key={i} className="flex items-center gap-3 border-b border-neutral-100 px-2 py-1 last:border-0">
+                      <span className="w-4 shrink-0 text-right text-[9px] text-neutral-300">{i + 1}</span>
+                      <span style={{ marginLeft: dedent ? 0 : 16 }}>
+                        <Line w={w as string} />
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* terminal pane */}
+            <div className="overflow-hidden rounded border border-neutral-300 bg-neutral-900/5">
+              <div className="flex items-center justify-between border-b border-neutral-300 wf-bar px-2 py-1">
+                <Eyebrow>Terminal · sandbox</Eyebrow>
+                <div className="flex items-center gap-2">
+                  <Badge tone="dark">running</Badge>
+                  <Btn size="sm" variant="outline">▷ Run checks</Btn>
+                </div>
+              </div>
+              <div className="p-2 font-mono">
+                <div className="flex items-center gap-2">
+                  <span className="text-[9px] text-neutral-500">$</span>
+                  <Line w="52%" />
+                </div>
+                <div className="mt-1 flex flex-col gap-1 pl-4">
+                  <Line w="74%" />
+                  <Line w="60%" />
+                </div>
+                <div className="mt-1 flex items-center gap-2">
+                  <span className="text-[9px] text-neutral-500">$</span>
+                  <span className="inline-block h-3 w-1.5 wf-bar" />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <Note arrow="up">Terminal + editor share one live container — no separate compile step.</Note>
+              <AutoValidation blocked={false} />
+            </div>
           </div>
         </div>
       </Panel>
