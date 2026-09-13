@@ -154,6 +154,7 @@ export const roleNav = {
   superAdmin: [
     { glyph: "▤", label: "Overview" },
     { glyph: "⌂", label: "Tenants" },
+    { glyph: "☺", label: "User Creation" },
     { glyph: "▦", label: "Plans" },
     { glyph: "⚑", label: "Feature Flags" },
     { glyph: "◫", label: "Usage" },

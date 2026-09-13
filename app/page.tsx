@@ -4,6 +4,7 @@ import {
   FacultyScreen,
   LoginScreen,
   SuperAdminScreen,
+  SuperAdminUserCreationScreen,
 } from "@/components/wireframe/screens-part1"
 import {
   AddQuestionScreen,
@@ -49,8 +50,16 @@ const screens: Screen[] = [
     render: () => <SuperAdminScreen />,
   },
   {
-    id: "college-admin",
+    id: "super-admin-user-creation",
     n: 3,
+    title: "Super Admin User Creation",
+    desc: "Create individual or bulk-import faculty and student accounts, assign colleges, and review the creation log.",
+    role: "Super Admin",
+    render: () => <SuperAdminUserCreationScreen />,
+  },
+  {
+    id: "college-admin",
+    n: 4,
     title: "College Admin Dashboard",
     desc: "Departments, users & roles, courses, the exam pipeline, report shortcuts and settings.",
     role: "College Admin / Exam Controller",
@@ -58,7 +67,7 @@ const screens: Screen[] = [
   },
   {
     id: "faculty",
-    n: 4,
+    n: 5,
     title: "Faculty Dashboard",
     desc: "My courses, question-bank snapshot, assessment statuses and the manual grading queue.",
     role: "Faculty",
@@ -66,7 +75,7 @@ const screens: Screen[] = [
   },
   {
     id: "wizard",
-    n: 5,
+    n: 6,
     title: "Assessment Creation Wizard",
     desc: "Four steps — Details, Add Questions, Settings (timing / randomization / proctoring), Validation & Submit.",
     role: "Faculty",
@@ -74,7 +83,7 @@ const screens: Screen[] = [
   },
   {
     id: "add-question",
-    n: 6,
+    n: 7,
     title: "Add Question (MCQ / Coding)",
     desc: "Per-question editor with MCQ or Coding types. Coding questions include an inline compiler / test runner, and validation runs automatically as you edit — no separate submit step.",
     role: "Faculty",
@@ -82,7 +91,7 @@ const screens: Screen[] = [
   },
   {
     id: "question-bank",
-    n: 7,
+    n: 8,
     title: "Question Bank",
     desc: "Filter by subject, unit, Bloom's taxonomy, difficulty and type. Preview panel and bulk import.",
     role: "Faculty",
@@ -90,7 +99,7 @@ const screens: Screen[] = [
   },
   {
     id: "validation",
-    n: 8,
+    n: 9,
     title: "Validation Workflow",
     desc: "Submission → HOD review → Exam Cell approval, with comments, version history and status badges.",
     role: "HOD / Exam Cell",
@@ -98,7 +107,7 @@ const screens: Screen[] = [
   },
   {
     id: "exam-management",
-    n: 9,
+    n: 10,
     title: "Exam Management",
     desc: "Schedule, student list, accommodations, proctoring settings and publish / unpublish controls.",
     role: "Exam Controller",
@@ -106,7 +115,7 @@ const screens: Screen[] = [
   },
   {
     id: "student",
-    n: 10,
+    n: 11,
     title: "Student Dashboard",
     desc: "Enrolled courses with progress, upcoming exams, recent results and notifications.",
     role: "Student",
@@ -114,7 +123,7 @@ const screens: Screen[] = [
   },
   {
     id: "exam-taking",
-    n: 11,
+    n: 12,
     title: "Exam Taking Interface (MCQ)",
     desc: "Countdown timer, question palette, navigation, flag-for-review and guarded submit.",
     role: "Student",
@@ -122,7 +131,7 @@ const screens: Screen[] = [
   },
   {
     id: "exam-coding",
-    n: 12,
+    n: 13,
     title: "Exam Taking — Coding Question",
     desc: "Problem statement with constraints, language selector, code editor and a run/test console showing sample vs hidden test cases. Same proctored top bar, palette and guarded submit.",
     role: "Student",
@@ -130,7 +139,7 @@ const screens: Screen[] = [
   },
   {
     id: "exam-lab",
-    n: 13,
+    n: 14,
     title: "Exam Taking — Lab Question",
     desc: "KillerKoda-style split: instructions with an automated step checklist on the left, a Monaco-style editor (file tabs, explorer) and a live sandbox terminal on the right. Check task runs the grader for the active step.",
     role: "Student",
@@ -138,7 +147,7 @@ const screens: Screen[] = [
   },
   {
     id: "grading",
-    n: 14,
+    n: 15,
     title: "Grading & Moderation",
     desc: "Auto-graded vs manual, rubric grading, moderation panel and re-evaluation requests.",
     role: "Faculty / Moderator",
@@ -146,7 +155,7 @@ const screens: Screen[] = [
   },
   {
     id: "reports",
-    n: 15,
+    n: 16,
     title: "Reports & Analytics",
     desc: "Student progress, item analysis (difficulty / discrimination), outcome attainment and NAAC/NBA exports.",
     role: "Auditor / Admin",
@@ -154,7 +163,7 @@ const screens: Screen[] = [
   },
   {
     id: "settings",
-    n: 16,
+    n: 17,
     title: "Tenant Settings",
     desc: "Branding, roles & permissions matrix, integrations and billing — scoped to a single tenant.",
     role: "College Admin",
@@ -182,7 +191,7 @@ export default function Page() {
 
           <p className="max-w-3xl text-[13px] leading-relaxed text-neutral-500">
             {
-              "13 desktop-first screens on an 8px grid — top bar with tenant switcher, left sidebar, breadcrumbs and content area. Placeholder blocks, squiggly text lines, simple icons and dashed annotations mark key interactions, validation states and workflow steps. No real colors, logos or copy."
+              "17 desktop-first screens on an 8px grid — top bar with tenant switcher, left sidebar, breadcrumbs and content area. Placeholder blocks, squiggly text lines, simple icons and dashed annotations mark key interactions, validation states and workflow steps. No real colors, logos or copy."
             }
           </p>
 

@@ -132,7 +132,82 @@ export function SuperAdminScreen() {
   )
 }
 
-/* 3 — College Admin dashboard -------------------------------------- */
+/* 3 — Super Admin user creation ------------------------------------- */
+export function SuperAdminUserCreationScreen() {
+  return (
+    <AppShell
+      role="Super Admin"
+      nav={roleNav.superAdmin}
+      active="User Creation"
+      trail={["Platform", "User Creation"]}
+      minWidth={980}
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-1">
+          <span className="text-[13px] font-semibold text-neutral-700">Create platform users</span>
+          <Label muted>Only Super Admins can provision faculty and students across colleges.</Label>
+        </div>
+        <Badge tone="dark">Super Admin only</Badge>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <Panel title="Create a user" action={<Badge tone="outline">Required fields marked *</Badge>}>
+          <div className="flex flex-col gap-3">
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="First name *" placeholder="[First name]" />
+              <Field label="Last name *" placeholder="[Last name]" />
+            </div>
+            <Field label="Work or college email *" placeholder="[name@college.edu]" />
+            <div className="grid grid-cols-2 gap-3">
+              <Select label="User type *" value="Faculty ▾" />
+              <Select label="Assign college *" value="[College Name] ▾" />
+            </div>
+            <Field label="Employee / student ID" placeholder="[ID number]" />
+            <div className="flex items-center justify-between rounded border border-neutral-200 bg-neutral-50 px-3 py-2">
+              <div className="flex flex-col gap-1">
+                <Label>Send welcome email</Label>
+                <span className="text-[10px] text-neutral-400">Includes a secure first-login link.</span>
+              </div>
+              <Toggle on />
+            </div>
+            <div className="flex gap-2">
+              <Btn variant="outline" className="flex-1 justify-center">Clear</Btn>
+              <Btn className="flex-1 justify-center">Create user</Btn>
+            </div>
+          </div>
+        </Panel>
+
+        <Panel title="Bulk creation" action={<Btn variant="outline" size="sm">Download template</Btn>}>
+          <div className="flex flex-col gap-3">
+            <div className="rounded border border-dashed border-neutral-300 bg-neutral-50 p-4 text-center">
+              <Icon glyph="⇧" size={24} />
+              <div className="mt-2 flex flex-col gap-1">
+                <Label>Upload faculty or student CSV</Label>
+                <span className="text-[10px] text-neutral-400">One file per user type · max 5,000 rows</span>
+              </div>
+              <Btn variant="outline" size="sm" className="mt-3">Choose CSV file</Btn>
+            </div>
+            <Note arrow="left">CSV validation checks duplicate emails, college assignment and required IDs before import.</Note>
+          </div>
+        </Panel>
+      </div>
+
+      <Panel title="Recently created users" action={<Btn variant="outline" size="sm">Export log</Btn>}>
+        <Table
+          columns={["Name", "Type", "College", "Created by", "Status"]}
+          widths={["1.4fr", "0.8fr", "1.3fr", "1fr", "0.8fr"]}
+          rows={[
+            [<Line key="a" w="70%" />, <Badge key="b" tone="outline">Faculty</Badge>, <Line key="c" w="75%" />, "You", <Badge key="d">Invited</Badge>],
+            [<Line key="e" w="62%" />, <Badge key="f" tone="outline">Student</Badge>, <Line key="g" w="65%" />, "You", <Badge key="h">Active</Badge>],
+            [<Line key="i" w="80%" />, <Badge key="j" tone="outline">Faculty</Badge>, <Line key="k" w="58%" />, "You", <Badge key="l" tone="hatch">Pending</Badge>],
+          ]}
+        />
+      </Panel>
+    </AppShell>
+  )
+}
+
+/* 4 — College Admin dashboard -------------------------------------- */
 export function CollegeAdminScreen() {
   return (
     <AppShell
@@ -166,12 +241,7 @@ export function CollegeAdminScreen() {
 
         <Panel
           title="Users & Roles"
-          action={
-            <div className="flex gap-2">
-              <Btn variant="outline" size="sm">Import CSV</Btn>
-              <Btn size="sm">+ Invite</Btn>
-            </div>
-          }
+          action={<Badge tone="hatch">Managed by Super Admin</Badge>}
         >
           <Table
             columns={["Name", "Role"]}
