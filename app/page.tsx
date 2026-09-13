@@ -26,6 +26,16 @@ import {
   StudentScreen,
   TenantSettingsScreen,
 } from "@/components/wireframe/screens-part3"
+import {
+  BatchManagementScreen,
+  DepartmentManagementScreen,
+  DepartmentStatusScreen,
+  FacultyDirectoryScreen,
+  GitHubLinkedInConnectScreen,
+  OnboardingWizardScreen,
+  PortfolioResumeScreen,
+  StudentDirectoryScreen,
+} from "@/components/wireframe/screens-part4"
 
 type Screen = {
   id: string
@@ -237,6 +247,70 @@ const screens: Screen[] = [
     role: "College Admin",
     render: () => <TenantSettingsScreen />,
   },
+  {
+    id: "department-management",
+    n: 18,
+    title: "Department Management",
+    desc: "Review departments automatically inferred from faculty and student creation, with HOD ownership and sync status. Detail additions: sync state, HOD ownership and permission note.",
+    role: "College Admin",
+    render: () => <DepartmentManagementScreen />,
+  },
+  {
+    id: "batch-management",
+    n: 19,
+    title: "Batch Management",
+    desc: "Track academic batches, enrollment totals, active years and archived cohorts.",
+    role: "College Admin",
+    render: () => <BatchManagementScreen />,
+  },
+  {
+    id: "student-directory",
+    n: 20,
+    title: "Student Directory",
+    desc: "Search, filter, export and review students provisioned for the current institute.",
+    role: "College Admin",
+    render: () => <StudentDirectoryScreen />,
+  },
+  {
+    id: "faculty-directory",
+    n: 21,
+    title: "Faculty Directory",
+    desc: "Manage the institute faculty directory with department, role and status filters.",
+    role: "College Admin / HOD",
+    render: () => <FacultyDirectoryScreen />,
+  },
+  {
+    id: "department-status",
+    n: 22,
+    title: "Department Status",
+    desc: "Read-only department readiness and academic coverage view for Faculty and HOD users.",
+    role: "Faculty / HOD",
+    render: () => <DepartmentStatusScreen />,
+  },
+  {
+    id: "github-linkedin",
+    n: 23,
+    title: "GitHub & LinkedIn Connect",
+    desc: "Students connect professional profiles and choose whether those links appear on their portfolio.",
+    role: "Student",
+    render: () => <GitHubLinkedInConnectScreen />,
+  },
+  {
+    id: "portfolio-resume",
+    n: 24,
+    title: "Portfolio & Resume",
+    desc: "Student portfolio editor with profile, headline, resume upload and project entries.",
+    role: "Student",
+    render: () => <PortfolioResumeScreen />,
+  },
+  {
+    id: "onboarding-wizard",
+    n: 25,
+    title: "Institute Onboarding Wizard",
+    desc: "Four-step Super Admin flow for institute details, identity routing, admin access and review.",
+    role: "Super Admin",
+    render: () => <OnboardingWizardScreen />,
+  },
 ]
 
 export default function Page() {
@@ -267,7 +341,7 @@ export default function Page() {
 
           <p className="max-w-3xl text-[13px] leading-relaxed text-neutral-500">
             {
-              "17 desktop-first screens on an 8px grid — top bar with tenant switcher, left sidebar, breadcrumbs and content area. Placeholder blocks, squiggly text lines, simple icons and dashed annotations mark key interactions, validation states and workflow steps. No real colors, logos or copy."
+              "25 desktop-first screens on an 8px grid — top bar with tenant switcher, left sidebar, breadcrumbs and content area. Placeholder blocks, squiggly text lines, simple icons and dashed annotations mark key interactions, validation states and workflow steps. No real colors, logos or copy."
             }
           </p>
 
