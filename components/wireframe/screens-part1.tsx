@@ -108,17 +108,16 @@ export function SuperAdminScreen() {
         >
           {showFilter ? (
             <div className="mb-3 flex items-center gap-2 rounded-md border border-dashed border-neutral-300 bg-neutral-50 p-2">
-              <Label>Plan</Label><button type="button" className="rounded border border-neutral-300 bg-white px-2 py-1 text-[10px]" onClick={() => notify("Showing Enterprise tenants")}>Enterprise</button>
+              <button type="button" className="rounded border border-neutral-300 bg-white px-2 py-1 text-[10px]" onClick={() => notify("Showing Enterprise tenants")}>Enterprise</button>
               <button type="button" className="rounded border border-neutral-300 bg-white px-2 py-1 text-[10px]" onClick={() => notify("Showing active tenants")}>Active only</button>
               <button type="button" className="ml-auto text-[10px] text-neutral-500 underline" onClick={() => setShowFilter(false)}>Close</button>
             </div>
           ) : null}
           <Table
-            columns={["College", "Plan", "Users", "Status", ""]}
-            widths={["2fr", "1fr", "0.8fr", "1fr", "0.6fr"]}
+            columns={["College", "Users", "Status", ""]}
+            widths={["2fr", "0.8fr", "1fr", "0.6fr"]}
             rows={tenants.map((tenant, index) => [
               <button key="name" type="button" className="text-left" onClick={() => notify(`${tenant} details opened`)}><Line w={["80%", "70%", "85%", "60%"][index]} /></button>,
-              <Badge key="plan" tone={index === 0 ? "dark" : index === 2 ? "outline" : undefined}>{index === 0 ? "Enterprise" : index === 2 ? "Trial" : "Pro"}</Badge>,
               ["1,240", "620", "90", "410"][index],
               <button key="status" type="button" onClick={() => notify(`${tenant} status details opened`)}><Badge tone={index === 2 ? "hatch" : undefined}>{index === 2 ? "Suspended" : "Active"}</Badge></button>,
               <div key="actions" className="relative"><Btn size="sm" variant="ghost" onClick={() => setOpenTenant(openTenant === tenant ? null : tenant)}>⋯</Btn>{openTenant === tenant ? <div className="absolute right-0 top-8 z-10 flex w-32 flex-col gap-1 rounded-md border border-neutral-300 bg-white p-1 shadow-sm"><button type="button" className="px-2 py-1 text-left text-[10px] hover:bg-neutral-100" onClick={() => notify(`${tenant} opened`)}>View details</button><button type="button" className="px-2 py-1 text-left text-[10px] hover:bg-neutral-100" onClick={() => notify(`${tenant} settings opened`)}>Manage settings</button><button type="button" className="px-2 py-1 text-left text-[10px] hover:bg-neutral-100" onClick={() => notify(`${tenant} action confirmed`)}>Suspend tenant</button></div> : null}</div>,

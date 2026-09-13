@@ -67,22 +67,6 @@ const screens: Screen[] = [
     render: () => <SuperAdminDestinationScreen kind="overview" />,
   },
   {
-    id: "super-admin-feature-flags",
-    n: 5,
-    title: "Feature Flags",
-    desc: "Global rollout controls for platform capabilities and tenant availability.",
-    role: "Super Admin",
-    render: () => <SuperAdminDestinationScreen kind="feature-flags" />,
-  },
-  {
-    id: "super-admin-usage",
-    n: 6,
-    title: "Platform Usage",
-    desc: "Cross-tenant activity, storage and adoption monitoring.",
-    role: "Super Admin",
-    render: () => <SuperAdminDestinationScreen kind="usage" />,
-  },
-  {
     id: "super-admin-settings",
     n: 7,
     title: "Platform Settings",

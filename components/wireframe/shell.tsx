@@ -156,9 +156,7 @@ export const roleNav = {
     { glyph: "▤", label: "Overview", href: "#super-admin-overview" },
     { glyph: "⌂", label: "Tenants", href: "#super-admin" },
     { glyph: "☺", label: "User Creation", href: "#super-admin-user-creation" },
-    { glyph: "⚑", label: "Feature Flags", href: "#super-admin-feature-flags" },
-    { glyph: "◫", label: "Usage" },
-    { glyph: "⚙", label: "Platform Settings" },
+    { glyph: "⚙", label: "Platform Settings", href: "#super-admin-settings" },
   ],
   collegeAdmin: [
     { glyph: "▤", label: "Dashboard" },
