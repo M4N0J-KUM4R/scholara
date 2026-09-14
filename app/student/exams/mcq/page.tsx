@@ -52,7 +52,7 @@ export default function ExamTakingMcqPage() {
     return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`
   }
 
-  const currentQ = fullMcqQuestions[currentIdx]
+  const currentQ = fullMcqQuestions[currentIdx] as { kind: "mcq"; n: number; stem: string; options: string[]; answer?: number; marks: number }
   const currentAnswer = answers[currentIdx]
   const isFlagged = flagged[currentIdx] ?? false
 

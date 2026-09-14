@@ -12,6 +12,7 @@ const statusTone: Record<Assessment["status"], "info" | "warning" | "success" | 
   Approved: "success",
   Published: "default",
   Rejected: "danger",
+  Completed: "success",
 }
 
 const btnLink =

@@ -8,11 +8,20 @@ async function loadLiveData() {
   const { data: auth } = await supabase.auth.getUser()
   if (!auth.user) return { authenticated: false, tenant: null, counts: null }
 
-  const { data: account } = await supabase
+  const { data: rawAccount } = await supabase
     .from("user_account")
     .select("id, first_name, last_name, tenant_id, tenant(name, slug)")
     .eq("auth_user_id", auth.user.id)
     .maybeSingle()
+
+  type AccountResult = {
+    id: string
+    first_name: string
+    last_name: string
+    tenant_id: string
+    tenant?: { name?: string; slug?: string } | null
+  }
+  const account = rawAccount as unknown as AccountResult | null
 
   if (!account) return { authenticated: true, tenant: null, counts: null }
 

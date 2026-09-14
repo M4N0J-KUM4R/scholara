@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils"
 import type { ButtonHTMLAttributes } from "react"
 
-type Variant = "default" | "dark" | "outline" | "ghost" | "danger" | "success" | "info" | "candy"
+type Variant = "default" | "dark" | "outline" | "ghost" | "danger" | "success" | "info" | "candy" | "mint"
 type Size = "sm" | "md" | "lg" | "icon"
 
 const variants: Record<Variant, string> = {
@@ -11,6 +11,7 @@ const variants: Record<Variant, string> = {
   ghost: "bg-transparent text-ink border-transparent shadow-none hover:bg-paper2",
   danger: "bg-tomato text-ink border-ink",
   success: "bg-mint text-ink border-ink",
+  mint: "bg-mint text-ink border-ink",
   info: "bg-sky text-ink border-ink",
   candy: "bg-candy text-ink border-ink",
 }

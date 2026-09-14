@@ -201,7 +201,7 @@ export type Assessment = {
   marks: number
   duration: string
   version: string
-  status: "Draft" | "Pending review" | "Approved" | "Rejected" | "Published"
+  status: "Draft" | "Pending review" | "Approved" | "Rejected" | "Published" | "Completed"
 }
 
 export const assessments: Assessment[] = [

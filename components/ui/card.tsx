@@ -13,7 +13,7 @@ export function CardHeader({
 }: {
   title: ReactNode
   action?: ReactNode
-  tone?: "sunlight" | "candy" | "sky" | "mint" | "ink" | "none"
+  tone?: "sunlight" | "candy" | "sky" | "mint" | "ink" | "grape" | "grapelight" | "none"
   className?: string
 }) {
   const tones = {
@@ -21,6 +21,8 @@ export function CardHeader({
     candy: "bg-candy",
     sky: "bg-skylight",
     mint: "bg-mintlight",
+    grape: "bg-grapelight",
+    grapelight: "bg-grapelight",
     ink: "bg-ink text-sun",
     none: "bg-white",
   }
