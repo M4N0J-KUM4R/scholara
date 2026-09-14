@@ -9,8 +9,8 @@ const _spaceMono = V0_Font_Space_Mono({ subsets: ['latin'], weight: ["400","700"
 const _sourceSerif_4 = V0_Font_Source_Serif_4({ subsets: ['latin'], weight: ["200","300","400","500","600","700","800","900"] })
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'CollegeCloud | Product UI Kit',
+  description: 'A polished multi-tenant learning platform prototype with Supabase-connected workspace data.',
   generator: 'v0.app',
   icons: {
     icon: [

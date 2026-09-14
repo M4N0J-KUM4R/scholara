@@ -45,24 +45,27 @@ export function LiveDataPanel() {
   const { data, error, isLoading } = useSWR("collegecloud-live-dashboard", loadLiveData)
 
   return (
-    <section className="rounded-md border border-neutral-300 bg-white p-4" aria-live="polite">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <section className="rounded-2xl border border-white/15 bg-white/10 p-4 shadow-xl shadow-slate-950/10 backdrop-blur-md" aria-live="polite">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-500">Supabase live connection</p>
-          <p className="mt-1 text-[12px] text-neutral-600">
-            {isLoading ? "Loading authenticated workspace…" : error ? "Unable to read the workspace" : data?.authenticated ? data.tenant ? `Connected as ${data.user} · ${data.tenant.name}` : "Authenticated user is not provisioned yet" : "Sign in to load tenant data"}
+          <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-teal-200">
+            <span className="size-2 rounded-full bg-teal-300" aria-hidden="true" />
+            Supabase workspace signal
+          </div>
+          <p className="mt-2 text-sm text-slate-200">
+            {isLoading ? "Loading your authenticated workspace..." : error ? "Workspace data could not be read. Check your Supabase policies." : data?.authenticated ? data.tenant ? `Connected as ${data.user} in ${data.tenant.name}` : "Authenticated user is not provisioned yet" : "Sign in to load tenant data"}
           </p>
         </div>
-        <span className={`rounded-full border px-2 py-1 text-[10px] font-semibold ${data?.authenticated ? "border-neutral-500 bg-neutral-800 text-white" : "border-neutral-300 bg-neutral-50 text-neutral-500"}`}>
-          {data?.authenticated ? "AUTHENTICATED" : "AUTH REQUIRED"}
+        <span className={`rounded-full border px-3 py-1.5 text-[10px] font-bold tracking-wide ${data?.authenticated ? "border-teal-200/40 bg-teal-300 text-teal-950" : "border-white/20 bg-white/10 text-slate-200"}`}>
+          {data?.authenticated ? "CONNECTED" : "AUTH REQUIRED"}
         </span>
       </div>
       {data?.counts ? (
-        <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-5">
+        <div className="mt-5 grid grid-cols-2 gap-2 md:grid-cols-5">
           {Object.entries(data.counts).map(([label, value]) => (
-            <div key={label} className="rounded border border-neutral-200 bg-neutral-50 p-2">
-              <p className="text-[10px] capitalize text-neutral-400">{label}</p>
-              <p className="mt-1 text-lg font-semibold text-neutral-700">{value}</p>
+            <div key={label} className="rounded-xl border border-white/10 bg-slate-950/20 p-3">
+              <p className="text-[10px] capitalize text-slate-300">{label}</p>
+              <p className="mt-1 text-2xl font-semibold tracking-tight text-white">{value}</p>
             </div>
           ))}
         </div>

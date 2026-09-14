@@ -324,32 +324,30 @@ export default function Page() {
   if (!mounted) return null
 
   return (
-    <div className="min-h-screen bg-neutral-100 text-neutral-800">
-      {/* Kit header */}
-      <header className="border-b border-neutral-300 bg-white">
-        <div className="mx-auto flex max-w-[1200px] flex-col gap-4 px-6 py-8">
-          <div className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded border border-neutral-400 bg-neutral-100 text-[12px] font-bold text-neutral-500">
-              CC
-            </span>
-            <div className="flex flex-col">
-              <span className="text-lg font-semibold text-neutral-800">CollegeCloud — Wireframe UI Kit</span>
-              <span className="text-[12px] text-neutral-500">
-                Low-fidelity, grayscale, brand-agnostic wireframes for a multi-tenant LMS
-              </span>
+    <div className="min-h-screen bg-background text-foreground">
+      <header className="border-b border-border bg-[linear-gradient(135deg,#102a43_0%,#164e63_58%,#0f766e_100%)] text-white">
+        <div className="mx-auto flex max-w-[1280px] flex-col gap-6 px-5 py-8 sm:px-8 lg:py-10">
+          <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+            <div className="flex items-start gap-4">
+              <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-teal-300 text-sm font-black text-slate-950 shadow-lg shadow-teal-950/20">CC</span>
+              <div>
+                <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-teal-200">Product experience system</p>
+                <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">CollegeCloud interface library</h1>
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-200">A high-fidelity operating layer for institutes, faculty, exam teams and students.</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-2 text-xs text-teal-50 backdrop-blur-sm">
+              <span className="size-2 rounded-full bg-amber-300" aria-hidden="true" />
+              25 connected product views
             </div>
           </div>
 
-          <p className="max-w-3xl text-[13px] leading-relaxed text-neutral-500">
-            {
-              "25 desktop-first screens on an 8px grid — top bar with tenant switcher, left sidebar, breadcrumbs and content area. Placeholder blocks, squiggly text lines, simple icons and dashed annotations mark key interactions, validation states and workflow steps. No real colors, logos or copy."
-            }
-          </p>
+          <p className="max-w-3xl text-sm leading-relaxed text-slate-300">Explore the redesigned workflows below. The gallery keeps the original information architecture while adding hierarchy, product language and a live Supabase workspace layer.</p>
 
           <LiveDataPanel />
 
           {/* Legend */}
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-md border border-neutral-200 bg-neutral-50 px-4 py-3 text-[11px] text-neutral-500">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-[11px] text-slate-200 backdrop-blur-sm">
             <span className="font-semibold uppercase tracking-wide text-neutral-500">Legend</span>
             <span className="flex items-center gap-2">
               <span className="wf-scribble inline-block h-[7px] w-8" /> text
@@ -369,7 +367,7 @@ export default function Page() {
           </div>
 
           {/* Index */}
-          <nav className="flex flex-wrap gap-2 pt-1">
+          <nav aria-label="Screen index" className="flex max-h-40 flex-wrap gap-2 overflow-y-auto pt-1">
             {screens.map((s) => (
               <a
                 key={s.id}
@@ -387,10 +385,10 @@ export default function Page() {
       </header>
 
       {/* Gallery */}
-      <main className="mx-auto grid max-w-[1200px] grid-cols-1 gap-8 px-6 py-8">
+      <main className="mx-auto grid max-w-[1280px] grid-cols-1 gap-8 px-5 py-8 sm:px-8 lg:py-10">
         {screens.map((s) => (
           <section key={s.id} id={s.id} className="scroll-mt-6">
-            <article className="overflow-hidden rounded-xl border border-neutral-300 bg-white shadow-sm">
+            <article className="overflow-hidden rounded-2xl border border-border bg-card shadow-md shadow-slate-900/5">
               <header className="flex items-start justify-between gap-4 border-b border-neutral-200 px-5 py-4">
                 <div className="flex items-start gap-3">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-neutral-700 text-[12px] font-bold text-neutral-50">

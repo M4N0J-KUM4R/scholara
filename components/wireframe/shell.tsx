@@ -4,9 +4,9 @@ import { Avatar, Eyebrow, Icon, Label } from "./kit"
 /* Browser-window chrome that wraps every screen */
 export function Frame({ children, minWidth = 940 }: { children: ReactNode; minWidth?: number }) {
   return (
-    <div className="overflow-x-auto rounded-lg border border-neutral-300 bg-neutral-50">
+    <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-slate-100 shadow-xl shadow-slate-900/10">
       <div style={{ minWidth }}>
-        <div className="flex items-center gap-2 border-b border-neutral-200 bg-neutral-100 px-3 py-2">
+        <div className="flex items-center gap-2 border-b border-slate-200 bg-white px-3 py-2.5">
           <span className="h-2.5 w-2.5 rounded-full border border-neutral-400 bg-neutral-200" />
           <span className="h-2.5 w-2.5 rounded-full border border-neutral-400 bg-neutral-200" />
           <span className="h-2.5 w-2.5 rounded-full border border-neutral-400 bg-neutral-200" />
@@ -23,10 +23,10 @@ export function Frame({ children, minWidth = 940 }: { children: ReactNode; minWi
 /* Top application bar including the tenant switcher */
 export function TopBar({ showTenantSwitcher = true }: { showTenantSwitcher?: boolean }) {
   return (
-    <div className="flex items-center justify-between border-b border-neutral-200 bg-white px-4 py-2.5">
+    <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3">
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2">
-          <span className="flex h-6 w-6 items-center justify-center rounded border border-neutral-400 bg-neutral-100 text-[10px] font-bold text-neutral-500">
+          <span className="flex size-7 items-center justify-center rounded-lg bg-teal-700 text-[10px] font-black text-white shadow-sm">
             CC
           </span>
           <span className="text-[12px] font-semibold text-neutral-600">CollegeCloud</span>
@@ -65,7 +65,7 @@ export function Sidebar({
   role: string
 }) {
   return (
-    <aside aria-label={`${role} navigation`} className="w-48 shrink-0 border-r border-neutral-200 bg-neutral-50 p-2 max-md:w-12 max-md:px-1">
+    <aside aria-label={`${role} navigation`} className="w-52 shrink-0 border-r border-slate-700 bg-slate-900 p-3 max-md:w-14 max-md:px-1">
       <div className="mb-2 px-2 py-1">
         <Eyebrow>{role}</Eyebrow>
       </div>
@@ -142,9 +142,9 @@ export function AppShell({
       <TopBar />
       <div className="flex">
         <Sidebar items={nav} active={active} role={role} />
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 flex-1 bg-slate-50">
           <Breadcrumbs trail={trail} />
-          <div className="flex flex-col gap-4 p-4">{children}</div>
+          <div className="flex flex-col gap-4 p-4 md:p-5">{children}</div>
         </div>
       </div>
     </Frame>
