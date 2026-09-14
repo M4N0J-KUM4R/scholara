@@ -1,12 +1,23 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import { Archivo_Black, Space_Grotesk } from 'next/font/google'
 import './globals.css'
+
+const display = Archivo_Black({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-display',
+})
+
+const body = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-body',
+})
 
 export const metadata: Metadata = {
   title: 'CollegeCloud — Multi-tenant LMS',
   description:
     'CollegeCloud academic operations platform with authenticated, tenant-scoped Supabase data.',
-  generator: 'v0.app',
   icons: {
     icon: [
       {
@@ -27,11 +38,8 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  colorScheme: 'light dark',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
-  ],
+  colorScheme: 'light',
+  themeColor: '#fffbef',
 }
 
 export default function RootLayout({
@@ -40,11 +48,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">
-        {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
-      </body>
+    <html lang="en" className={`${display.variable} ${body.variable}`}>
+      <body className="antialiased">{children}</body>
+      {process.env.NODE_ENV === 'production' && <Analytics />}
     </html>
   )
 }

@@ -45,33 +45,33 @@ export function LiveDataPanel() {
   const { data, error, isLoading } = useSWR("collegecloud-live-dashboard", loadLiveData)
 
   return (
-    <section className="rounded-md border border-neutral-300 bg-white p-4" aria-live="polite">
+    <section className="nb-shadow rounded-none border-2 border-ink bg-white p-4" aria-live="polite">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-neutral-500">Supabase live connection</p>
-          <p className="mt-1 text-[12px] text-neutral-600">
+          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-ink">Supabase live connection</p>
+          <p className="mt-1 text-[12px] font-medium text-ink/75">
             {isLoading ? "Loading authenticated workspace…" : error ? "Unable to read the workspace" : data?.authenticated ? data.tenant ? `Connected as ${data.user} · ${data.tenant.name}` : "Authenticated user is not provisioned yet" : "Sign in to load tenant data"}
           </p>
         </div>
-        <span className={`rounded-full border px-2 py-1 text-[10px] font-semibold ${data?.authenticated ? "border-neutral-500 bg-neutral-800 text-white" : "border-neutral-300 bg-neutral-50 text-neutral-500"}`}>
-          {data?.authenticated ? "AUTHENTICATED" : "AUTH REQUIRED"}
+        <span className={`rounded-none border-2 border-ink px-2 py-1 text-[10px] font-bold uppercase ${data?.authenticated ? "bg-mint text-ink" : "bg-sunlight text-ink"}`}>
+          {data?.authenticated ? "Authenticated" : "Auth required"}
         </span>
       </div>
       {data?.counts ? (
         <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-5">
           {Object.entries(data.counts).map(([label, value]) => (
-            <div key={label} className="rounded border border-neutral-200 bg-neutral-50 p-2">
-              <p className="text-[10px] capitalize text-neutral-400">{label}</p>
-              <p className="mt-1 text-lg font-semibold text-neutral-700">{value}</p>
+            <div key={label} className="rounded-none border-2 border-ink bg-paper p-2">
+              <p className="text-[10px] font-bold capitalize text-ink/50">{label}</p>
+              <p className="mt-1 font-display text-lg text-ink">{value}</p>
             </div>
           ))}
         </div>
       ) : null}
       {data?.announcements?.length ? (
-        <div className="mt-4 border-t border-neutral-200 pt-3">
-          <p className="text-[10px] font-semibold uppercase tracking-wide text-neutral-400">Latest announcements</p>
+        <div className="mt-4 border-t-2 border-ink pt-3">
+          <p className="text-[10px] font-bold uppercase tracking-wide text-ink/50">Latest announcements</p>
           <ul className="mt-2 space-y-1">
-            {data.announcements.map((item: { id: string; title: string }) => <li key={item.id} className="text-[11px] text-neutral-600">{item.title}</li>)}
+            {data.announcements.map((item: { id: string; title: string }) => <li key={item.id} className="text-[11px] font-medium text-ink/75">{item.title}</li>)}
           </ul>
         </div>
       ) : null}
