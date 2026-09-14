@@ -3,9 +3,9 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'CollegeCloud — Wireframe UI Kit',
+  title: 'CollegeCloud — Multi-tenant LMS',
   description:
-    'Low-fidelity, grayscale, brand-agnostic wireframes for CollegeCloud, a multi-tenant LMS for colleges.',
+    'CollegeCloud academic operations platform with authenticated, tenant-scoped Supabase data.',
   generator: 'v0.app',
   icons: {
     icon: [

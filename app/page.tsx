@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState, type ReactNode } from "react"
+import { LiveDataPanel } from "@/components/live-data-panel"
 import {
   CollegeAdminDestinationScreen,
   CollegeAdminScreen,
@@ -344,6 +345,8 @@ export default function Page() {
               "25 desktop-first screens on an 8px grid — top bar with tenant switcher, left sidebar, breadcrumbs and content area. Placeholder blocks, squiggly text lines, simple icons and dashed annotations mark key interactions, validation states and workflow steps. No real colors, logos or copy."
             }
           </p>
+
+          <LiveDataPanel />
 
           {/* Legend */}
           <div className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-md border border-neutral-200 bg-neutral-50 px-4 py-3 text-[11px] text-neutral-500">
